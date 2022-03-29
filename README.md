@@ -5,10 +5,10 @@ Francisco Vera - francisco.vera@upr.edu
 Alejandro Ruiz - alejandro.ruiz2@upr.edu
 
 
-Host: ec2-3-222-204-187.compute-1.amazonaws.com
-Database: d6f7futiojkt4a
-User: bvummimqcudkfe
+Host: ec2-34-231-63-30.compute-1.amazonaws.com
+Database: d288oo63smoug9
+User: cfbjmtoawljght
 Port: 5432
-Password: fd8002ca7ec9f6f7aa81882b686a04edcfdd96daa9d3c58a981f96adb36e41ec
-URI: postgres://bvummimqcudkfe:fd8002ca7ec9f6f7aa81882b686a04edcfdd96daa9d3c58a981f96adb36e41ec@ec2-3-222-204-187.compute-1.amazonaws.com:5432/d6f7futiojkt4a
+Password: 5f6619c35f7eb64d82f76e917c937ec97abb2477a6edcf3bcc89f2af83b3e03b
+URI: postgres://cfbjmtoawljght:5f6619c35f7eb64d82f76e917c937ec97abb2477a6edcf3bcc89f2af83b3e03b@ec2-34-231-63-30.compute-1.amazonaws.com:5432/d288oo63smoug9
 Heroku CLI: heroku pg:psql postgresql-fitted-64267 --app db-class-22

@@ -9,6 +9,10 @@ app = Flask(__name__)
 def hell_world():
     return 'Hello World'
 
+@app.route('/dude')
+def hell_dude():
+    return 'Hello Dude'
+
 @app.route('/ProductCategories/categories')
 def category_handler():
     return ProductCategoryController().getAllCategories()

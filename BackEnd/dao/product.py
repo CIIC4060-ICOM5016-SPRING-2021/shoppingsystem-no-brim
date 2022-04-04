@@ -1,5 +1,6 @@
 from config.pg_config import pg_config
 import psycopg2
+from datetime import datetime, timezone
 
 
 class ProductDAO:
@@ -81,5 +82,25 @@ class ProductDAO:
             result.append(r)
         cursor.close()
         return result
+
+    def insertIntoProducts(self, name, description, price, inventory, categoryid):
+        query = "INSERT INTO products (name, description, price, inventory, category, times_bought, likes, " \
+                "created_at) VALUES (%s ,%s ,%s ,%s ,%s ,%s ,%s, %s) returning product_id;"
+        dt = datetime.now()
+        cursor = self.conn.cursor()
+        cursor.execute(query, (name, description, price, inventory, categoryid, 0, 0, dt,))
+        product_id = cursor.fetchone()[0]
+        self.conn.commit()
+        return product_id
+
+    def updateProduct(self, product_id, price, inventory):
+        query = "UPDATE products SET price=%s, inventory=%s WHERE product_id=%s"
+        cursor = self.conn.cursor()
+        cursor.execute(query, (price, inventory, product_id,))
+        rowcount = cursor.rowcount
+        self.conn.commit()
+        return rowcount != 0
+
+
 
 

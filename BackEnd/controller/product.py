@@ -63,3 +63,26 @@ class ProductController:
         if not result:
             return jsonify("Not Found"), 404
         return jsonify(result)
+
+    def addNewProduct(self, json):
+        name = json['Name']
+        description = json['Description']
+        price = json['Price']
+        inventory = json['Inventory']
+        categoryid = json['Category']
+
+        dao = ProductDAO()
+        id = dao.insertIntoProducts(name, description, price, inventory, categoryid)
+        json['Id'] = id
+        return jsonify(json), 201
+
+    def updateProductPrice(self, product_id, json):
+        price = json['Price']
+        inventory = json['Inventory']
+
+        dao = ProductDAO()
+        updated = dao.updateProduct(product_id, price, inventory)
+        if updated:
+            return jsonify(json), 200
+        else:
+            return jsonify("Not Found"), 404

@@ -101,6 +101,32 @@ class ProductDAO:
         self.conn.commit()
         return rowcount != 0
 
+    def deleteProductById(self, product_id):
+        query = "DELETE FROM products WHERE product_id=%s returning product_id;"
+        cursor = self.conn.cursor()
+        cursor.execute(query, (product_id,))
+        id = cursor.fetchone()[0]
+        self.conn.commit()
+        return id
 
+    def getMostBoughtProdcut(self):
+        query = "SELECT product FROM ordered_items GROUP BY product ORDER BY SUM(quantity) DESC LIMIT 1 ;"
+        cursor = self.conn.cursor()
+        cursor.execute(query)
+        return cursor.fetchone()[0]
 
+    def getMostLikedProdcut(self):
+        query = "SELECT product FROM liked_items GROUP BY product ORDER BY COUNT(liked_item_id) DESC LIMIT 1;"
+        cursor = self.conn.cursor()
+        cursor.execute(query)
+        return cursor.fetchone()[0]
+
+    def getMostExpensiveProduct(self):
+        query = "SELECT products.product_id, products.name, products.description, products.price as price, " \
+                "products.inventory, products.times_bought, products.likes, product_categories.name FROM products " \
+                "INNER JOIN product_categories ON products.category = product_categories.category_id " \
+                "ORDER BY products.price DESC;"
+        cursor = self.conn.cursor()
+        cursor.execute(query,)
+        return cursor.fetchone()
 

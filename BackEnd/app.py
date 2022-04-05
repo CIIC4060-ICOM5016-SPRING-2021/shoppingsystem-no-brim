@@ -15,9 +15,14 @@ def hell_dude():
     return 'Hello Dude'
 
 
-@app.route('/ProductCategories/categories')
+@app.route('/NO-BRIM/ProductCategories/categories')
 def category_handler():
     return ProductCategoryController().getAllCategories()
+
+
+@app.route('/NO-BRIM/ProductCategories/categories/bought')
+def category_bought_handler():
+    return ProductCategoryController().getMostBoughtCategory()
 
 
 @app.route('/NO-BRIM/Products/products')
@@ -44,21 +49,44 @@ def product_byname_handler(order):
 def product_bycategory_handler(category_id):
     return ProductController().getProductByCategory(category_id)
 
-@app.route('/NO-BRIM/Products/products/add',methods=['GET','POST'])
+
+@app.route('/NO-BRIM/Products/products/add', methods=['GET', 'POST'])
 def product_new_handler():
     if request.method == 'GET':
         return ProductController().getAllProducts()
     elif request.method == 'POST':
         return ProductController().addNewProduct(request.json)
 
-@app.route('/NO-BRIM/Products/products/update/<int:product_id>',methods=['GET','PUT'])
-def product_price_handler(product_id):
+
+@app.route('/NO-BRIM/Products/products/update/<int:product_id>', methods=['GET', 'PUT'])
+def product_update_handler(product_id):
     if request.method == 'GET':
         return ProductController().getProductById(product_id)
     elif request.method == 'PUT':
-        return ProductController().updateProductPrice(product_id, request.json)
+        return ProductController().updateProduct(product_id, request.json)
 
 
+@app.route('/NO-BRIM/Products/products/delete/<int:product_id>', methods=['GET', 'DELETE'])
+def product_delete_handler(product_id):
+    if request.method == 'GET':
+        return ProductController().getProductById(product_id)
+    elif request.method == 'PUT':
+        return ProductController().deleteProduct(product_id)
+
+
+@app.route('/NO-BRIM/Products/products/global/bought')
+def product_bought_handler():
+    return ProductController().getMostBoughtProdcut()
+
+
+@app.route('/NO-BRIM/Products/products/global/liked')
+def product_liked_handler():
+    return ProductController().getMostLikedProdcut()
+
+
+@app.route('/NO-BRIM/Products/products/global/expensive')
+def product_expensive_handler():
+    return ProductController().getMostExpensiveProduct()
 
 
 if __name__ == '__main__':

@@ -76,7 +76,7 @@ class ProductController:
         json['Id'] = id
         return jsonify(json), 201
 
-    def updateProductPrice(self, product_id, json):
+    def updateProduct(self, product_id, json):
         price = json['Price']
         inventory = json['Inventory']
 
@@ -86,3 +86,41 @@ class ProductController:
             return jsonify(json), 200
         else:
             return jsonify("Not Found"), 404
+
+    def deleteProduct(self, product_id):
+        dao = ProductDAO()
+        result = dao.deleteProductById(product_id)
+        if not result:
+            return jsonify("Not Found"), 404
+
+        d = self.build_dict(result)
+        return jsonify(d)
+
+    def getMostBoughtProdcut(self):
+        dao = ProductDAO()
+        product_id = dao.getMostBoughtProdcut()
+        result = dao.getProductById(product_id)
+        if not result:
+            return jsonify("Not Found"), 404
+
+        d = self.build_dict(result)
+        return jsonify(d)
+
+    def getMostLikedProdcut(self):
+        dao = ProductDAO()
+        product_id = dao.getMostLikedProdcut()
+        result = dao.getProductById(product_id)
+        if not result:
+            return jsonify("Not Found"), 404
+
+        d = self.build_dict(result)
+        return jsonify(d)
+
+    def getMostExpensiveProduct(self):
+        dao = ProductDAO()
+        result = dao.getMostExpensiveProduct()
+        if not result:
+            return jsonify("Not Found"), 404
+
+        d = self.build_dict(result)
+        return jsonify(d)

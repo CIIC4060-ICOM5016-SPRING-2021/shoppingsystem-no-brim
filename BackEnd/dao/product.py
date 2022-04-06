@@ -121,6 +121,15 @@ class ProductDAO:
         cursor.execute(query)
         return cursor.fetchone()[0]
 
+    def getCheapestProduct(self):
+        query = "SELECT products.product_id, products.name, products.description, products.price as price, " \
+                "products.inventory, products.times_bought, products.likes, product_categories.name FROM products " \
+                "INNER JOIN product_categories ON products.category = product_categories.category_id " \
+                "ORDER BY products.price ASC;"
+        cursor = self.conn.cursor()
+        cursor.execute(query,)
+        return cursor.fetchone()
+
     def getMostExpensiveProduct(self):
         query = "SELECT products.product_id, products.name, products.description, products.price as price, " \
                 "products.inventory, products.times_bought, products.likes, product_categories.name FROM products " \

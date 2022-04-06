@@ -116,6 +116,15 @@ class ProductController:
         d = self.build_dict(result)
         return jsonify(d)
 
+    def getCheapestProduct(self):
+        dao = ProductDAO()
+        result = dao.getCheapestProduct()
+        if not result:
+            return jsonify("Not Found"), 404
+
+        d = self.build_dict(result)
+        return jsonify(d)
+
     def getMostExpensiveProduct(self):
         dao = ProductDAO()
         result = dao.getMostExpensiveProduct()

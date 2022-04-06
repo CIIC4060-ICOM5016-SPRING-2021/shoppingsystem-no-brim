@@ -83,6 +83,9 @@ def product_bought_handler():
 def product_liked_handler():
     return ProductController().getMostLikedProdcut()
 
+@app.route('/NO-BRIM/Products/products/global/cheapest')
+def product_cheapest_handler():
+    return ProductController().getCheapestProduct()
 
 @app.route('/NO-BRIM/Products/products/global/expensive')
 def product_expensive_handler():

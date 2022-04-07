@@ -1,6 +1,7 @@
 from flask import Flask, request
 from controller.productcategory import ProductCategoryController
 from controller.product import ProductController
+from controller.order import OrderController
 
 app = Flask(__name__)
 
@@ -66,7 +67,7 @@ def product_update_handler(product_id):
         return ProductController().updateProduct(product_id, request.json)
 
 
-@app.route('/NO-BRIM/Products/products/delete/<int:product_id>', methods=['GET', 'DELETE'])
+@app.route('/NO-BRIM/Products/products/delete/<int:product_id>', methods=['GET', 'PUT'])
 def product_delete_handler(product_id):
     if request.method == 'GET':
         return ProductController().getProductById(product_id)
@@ -87,6 +88,16 @@ def product_liked_handler():
 @app.route('/NO-BRIM/Products/products/global/expensive')
 def product_expensive_handler():
     return ProductController().getMostExpensiveProduct()
+
+
+@app.route('/NO-BRIM/Order/orders/<int:order_id>')
+def order_byid_handler(order_id):
+    return OrderController().getOrderById(order_id)
+
+
+@app.route('/NO-BRIM/Order/orders')
+def order_handler():
+    return OrderController().getAllOrders()
 
 
 if __name__ == '__main__':

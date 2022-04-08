@@ -31,7 +31,7 @@ class UserDAO:
             return cursor.fetchone()
 
         def createUser(self, username, password, first_name, last_name, phone, email, is_admin):
-            query = "INSERT INTO user (username,password,first_name,last_name,phone,email,created_at,is_admin) " \
+            query = "INSERT INTO user (username,password,first_name,last_name,phone,email,created_at,is_admin)" \
                     "VALUES (%s,%s,%s,%s,%s,%s,%s) returning user_id;"
             dt = datetime.now()
             cursor = self.conn.cursor()
@@ -58,3 +58,46 @@ class UserDAO:
             id = cursor.fetchone()[0]
             self.conn.commit()
             return id
+
+        def getMostBoughtCategory(self, user_id):
+            query = "SELECT u.user_id, pc.category_id,pc.name, pc.description FROM ordered_items INNER JOIN " \
+                "products p on p.product_id = ordered_items.product INNER JOIN product_categories pc on p.category = " \
+                "INNER JOIN orders o on ordered_items.order = o.order_id" \
+                "INNER JOIN user u on o.user = u.user_id" \
+                "pc.category_id GROUP BY pc.category_id,pc.name, pc.description ORDER BY SUM(ordered_items.quantity) " \
+                "DESC LIMIT 1;" \
+                "WHERE user_id=%s" 
+            cursor = self.conn.cursor()
+            cursor.execute(query)
+            result = cursor.fetchone()
+            return result
+
+        def getMostBoughtProdcut(self, user_id):
+            query = "SELECT u.user_id, product FROM ordered_items" \
+                    "INNER JOIN orders o on ordered_items.order = o.order_id" \
+                    "INNER JOIN user u on o.user = u.user_id" \
+                    "GROUP BY product ORDER BY SUM(quantity) DESC LIMIT 1 ;" \
+                    "WHERE user_id=%s" 
+            cursor = self.conn.cursor()
+            cursor.execute(query)
+            return cursor.fetchone()[0]
+
+        def getCheapestProduct(self, user_id):
+            query = "SELECT u.user_id, products.product_id, products.name, products.description, products.price as price, " \
+                "products.inventory, products.times_bought, products.likes, product_categories.name FROM products " \
+                "INNER JOIN product_categories ON products.category = product_categories.category_id " \
+                "ORDER BY products.price ASC;" \
+                "WHERE user_id=%s" 
+            cursor = self.conn.cursor()
+            cursor.execute(query)
+            return cursor.fetchone()
+
+        def getMostExpensiveProduct(self, user_id):
+            query = "SELECT u.user_id, products.product_id, products.name, products.description, products.price as price, " \
+                "products.inventory, products.times_bought, products.likes, product_categories.name FROM products " \
+                "INNER JOIN product_categories ON products.category = product_categories.category_id " \
+                "ORDER BY products.price DESC;" \
+                "WHERE user_id=%s" 
+            cursor = self.conn.cursor()
+            cursor.execute(query)
+            return cursor.fetchone()

@@ -1,5 +1,9 @@
 from flask import jsonify
 from dao.user import UserDAO
+from dao.product import ProductDAO
+from dao.productcategory import ProductCategoryDAO
+
+
 
 class UserController:
 
@@ -66,3 +70,45 @@ class UserController:
 
         d = self.build_dict(result)
         return jsonify(d)
+
+
+### Must implement these into the user controller.
+
+    # def getMostBoughtCategory(self, user_id):
+    #     prod_dao = ProductCategoryDAO()
+    #     user_dao = UserDAO()
+
+    #     result = prod_dao.getMostBoughtCategory()
+    #     if not result:
+    #         return jsonify("Not Found"), 404
+
+    #     d = self.build_dict(result)
+    #     return jsonify(d)
+
+    # def getMostBoughtProdcut(self, user_id):
+    #     dao = ProductDAO()
+    #     product_id = dao.getMostBoughtProdcut()
+    #     result = dao.getProductById(product_id)
+    #     if not result:
+    #         return jsonify("Not Found"), 404
+
+    #     d = self.build_dict(result)
+    #     return jsonify(d)
+
+    # def getCheapestProduct(self, user_id):
+    #     dao = ProductDAO()
+    #     result = dao.getCheapestProduct()
+    #     if not result:
+    #         return jsonify("Not Found"), 404
+
+    #     d = self.build_dict(result)
+    #     return jsonify(d)
+
+    # def getMostExpensiveProduct(self, user_id):
+    #     dao = ProductDAO()
+    #     result = dao.getMostExpensiveProduct()
+    #     if not result:
+    #         return jsonify("Not Found"), 404
+
+    #     d = self.build_dict(result)
+    #     return jsonify(d)

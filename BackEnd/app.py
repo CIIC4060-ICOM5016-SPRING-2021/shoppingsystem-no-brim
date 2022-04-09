@@ -2,6 +2,7 @@ from flask import Flask, request
 from controller.productcategory import ProductCategoryController
 from controller.product import ProductController
 from controller.order import OrderController
+from controller.cart import CartController
 
 app = Flask(__name__)
 
@@ -98,6 +99,10 @@ def order_byid_handler(order_id):
 @app.route('/NO-BRIM/Order/orders')
 def order_handler():
     return OrderController().getAllOrders()
+
+@app.route('/NO-BRIM/Cart/cart/additem')
+def add_cart_handler():
+    return CartController().addItem()
 
 
 if __name__ == '__main__':

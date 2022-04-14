@@ -12,7 +12,7 @@ class CartDao:
         self.conn = psycopg2.connect(connection_url)
 
     def getCart(self, user_id):
-        query = "SELECT cart_item_id, quantity, product, user FROM cart_items WHERE user = %s;"
+        query = 'SELECT cart_item_id, quantity, product, user FROM cart_items WHERE "user" = %s;'
         cursor = self.conn.cursor()
         cursor.execute(query, (user_id,))
         result = []
@@ -32,7 +32,7 @@ class CartDao:
         return result
 
     def addCartItem(self, quantity, product_id, user_id):
-        query = "INSERT INTO cart_items (quantity, product, user) VALUES (%s, %s, %s) returning cart_item_id;"
+        query = 'INSERT INTO cart_items (quantity, product, "user") VALUES (%s, %s, %s) returning cart_item_id;'
         cursor = self.conn.cursor()
         cursor.execute(query, (quantity, product_id, user_id,))
         product_id = cursor.fetchone()[0]
@@ -43,15 +43,19 @@ class CartDao:
         query = "DELETE FROM cart_items WHERE cart_item_id = %s returning cart_item_id;"
         cursor = self.conn.cursor()
         cursor.execute(query, (cart_item_id,))
-        result = cursor.fetchone()[0]
+        try:
+            result = cursor.fetchone()[0]
+        except:
+            return
         self.conn.commit()
         return result
 
     def clearCartItems(self, user_id):
-        query = "DELETE FROM cart_items WHERE user=%s;"
+        query = 'DELETE FROM cart_items WHERE "user"=%s;'
         cursor = self.conn.cursor()
         cursor.execute(query, (user_id,))
         result = user_id
+        self.conn.commit()
         return result
 
 

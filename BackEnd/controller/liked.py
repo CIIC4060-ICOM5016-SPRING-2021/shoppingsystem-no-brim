@@ -2,18 +2,18 @@ from flask import jsonify
 from dao.liked import LikedDao
 
 class LikedController:
-    def build_order_dict(self, row):
+    def build_dict(self, row):
         result = {'liked_item_id': row[0], 'product_id': row[1], 'user_id': row[2]}
         return result
 
-    def getLikes(self, json):
+    def getLikes(self, user_id):
         dao = LikedDao()
-        user_id = json["User"]
         result_t = dao.getLikes(user_id)
 
         result = []
         for r in result_t:
-            result.append(self.build_order_item_dict(r))
+            result.append(self.build_dict(r))
+        return jsonify(result)
 
     def getAllLikes(self):
         dao = LikedDao()
@@ -34,12 +34,10 @@ class LikedController:
         json['Id'] = id
         return jsonify(json), 201
 
-    def removeLikedItem(self, json):
+    def removeLikedItem(self, liked_item_id):
         dao = LikedDao()
-        liked_item_id = json["Cart Item"]
         result = dao.deleteLikedItem(liked_item_id)
         if not result:
             return jsonify("Not Found"), 404
 
-        d = self.build_dict(result)
-        return jsonify(d)
+        return jsonify(liked_item_id)

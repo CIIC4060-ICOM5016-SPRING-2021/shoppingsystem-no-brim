@@ -3,6 +3,7 @@ from controller.productcategory import ProductCategoryController
 from controller.product import ProductController
 from controller.order import OrderController
 from controller.cart import CartController
+from controller.liked import LikedController
 
 app = Flask(__name__)
 
@@ -100,9 +101,65 @@ def order_byid_handler(order_id):
 def order_handler():
     return OrderController().getAllOrders()
 
-@app.route('/NO-BRIM/Cart/cart/additem')
-def add_cart_handler():
-    return CartController().addItem()
+
+@app.route('/NO-BRIM/Cart/cart/')
+def cart_handler():
+    return CartController().getAllCarts()
+
+
+@app.route('/NO-BRIM/Cart/cart/<int:user_id>')
+def cart_byid_handler(user_id):
+    return CartController().getCart(user_id)
+
+
+@app.route('/NO-BRIM/Cart/cart/add', methods=['GET', 'POST'])
+def cart_item_new_handler():
+    if request.method == 'GET':
+        return CartController().getAllCarts()
+    elif request.method == 'POST':
+        return CartController().addCartItem(request.json)
+
+
+@app.route('/NO-BRIM/Cart/cart/delete/<int:cart_item_id>', methods=['GET', 'DELETE'])
+def cart_delete_handler(cart_item_id):
+    if request.method == 'GET':
+        return CartController().getAllCarts()
+    elif request.method == 'DELETE':
+        return CartController().removeCartItem(cart_item_id)
+
+
+@app.route('/NO-BRIM/Cart/cart/clear/<int:user_id>', methods=['GET', 'DELETE'])
+def cart_clear_handler(user_id):
+    if request.method == 'GET':
+        return CartController().getAllCarts()
+    elif request.method == 'DELETE':
+        return CartController().clearCartItems(user_id)
+
+
+@app.route('/NO-BRIM/Liked/liked_items/')
+def liked_handler():
+    return LikedController().getAllLikes()
+
+
+@app.route('/NO-BRIM/Liked/liked_items/<int:user_id>')
+def liked_byid_handler(user_id):
+    return LikedController().getLikes(user_id)
+
+
+@app.route('/NO-BRIM/Liked/liked_items/add', methods=['GET', 'POST'])
+def liked_item_new_handler():
+    if request.method == 'GET':
+        return LikedController().getAllLikes()
+    elif request.method == 'POST':
+        return LikedController().addLikedItem(request.json)
+
+
+@app.route('/NO-BRIM/Liked/liked_items/delete/<int:liked_item_id>', methods=['GET', 'DELETE'])
+def liked_delete_handler(liked_item_id):
+    if request.method == 'GET':
+        return LikedController().getAllLikes()
+    elif request.method == 'DELETE':
+        return LikedController().removeLikedItem(liked_item_id)
 
 
 if __name__ == '__main__':

@@ -4,19 +4,19 @@ from dao.cart import CartDao
 
 class CartController:
 
-    def build_order_dict(self, row):
+    def build_dict(self, row):
         result = {'cart_item_id': row[0], 'quantity': row[1], 'product_id': row[2], 'user_id': row[3]}
         return result
 
-    def getCart(self, json):
+    def getCart(self, user_id):
         dao = CartDao()
-        user_id = json["User"]
+
         result_t = dao.getCart(user_id)
 
         result = []
         for r in result_t:
-            result.append(self.build_order_item_dict(r))
-
+            result.append(self.build_dict(r))
+        return jsonify(result)
     def getAllCarts(self):
         dao = CartDao()
         result_t = dao.getAllCarts()
@@ -37,18 +37,16 @@ class CartController:
         json['Id'] = id
         return jsonify(json), 201
 
-    def removeCartItem(self, json):
+    def removeCartItem(self, cart_item_id):
         dao = CartDao()
-        cart_item_id = json["Cart Item"]
         result = dao.deleteCartItem(cart_item_id)
         if not result:
             return jsonify("Not Found"), 404
 
-        d = self.build_dict(result)
-        return jsonify(d)
 
-    def clearCartItems(self, json):
+        return jsonify(result)
+
+    def clearCartItems(self, user_id):
         dao = CartDao()
-        user_id = json["User"]
         result = dao.clearCartItems(user_id)
-        return jsonify(json)
+        return jsonify(user_id)

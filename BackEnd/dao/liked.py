@@ -11,7 +11,7 @@ class LikedDao:
         self.conn = psycopg2.connect(connection_url)
 
     def getLikes(self, user_id):
-        query = "SELECT liked_item_id, product, user FROM liked_items WHERE user = %s;"
+        query = 'SELECT liked_item_id, product, user FROM liked_items WHERE "user" = %s;'
         cursor = self.conn.cursor()
         cursor.execute(query, (user_id,))
         result = []
@@ -31,18 +31,21 @@ class LikedDao:
         return result
 
     def addLikedItem(self,product_id, user_id):
-        query = "INSERT INTO liked_items (product, user) VALUES (%s, %s) returning liked_item_id;"
+        query = 'INSERT INTO liked_items (product, "user") VALUES (%s, %s) returning liked_item_id;'
         cursor = self.conn.cursor()
         cursor.execute(query, (product_id, user_id,))
         product_id = cursor.fetchone()[0]
         self.conn.commit()
+        self.conn.close()
         return product_id
 
     def deleteLikedItem(self, liked_item_id):
         query = "DELETE FROM liked_items WHERE liked_item_id = %s returning liked_item_id;"
         cursor = self.conn.cursor()
         cursor.execute(query, (liked_item_id,))
-        result = cursor.fetchone()[0]
+        try:
+            result = cursor.fetchone()[0]
+        except:
+            return
         self.conn.commit()
         return result
-    

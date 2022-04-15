@@ -25,7 +25,7 @@ class UserDAO:
         def getUserById(self, user_id):
             query = "SELECT user.user_id,user.username,user.password,user.first_name,user_last_name,user.phone,user.email" \
                     "FROM user " \
-                    "WHERE user.user_id = '%s';"
+                    "WHERE user.user_id = %s;"
             cursor = self.conn.cursor()
             cursor.execute(query, (user_id,))
             return cursor.fetchone()
@@ -42,7 +42,7 @@ class UserDAO:
 
         def updateUser(self, user_id, username, password, first_name, last_name, phone, email, is_admin):
             query = "UPDATE user SET user_id=%s, username=%s,password=%s,first_name=%s,last_name=%s,phone=%s,email=%s,is_admin=%s" \
-                    "WHERE user_id=%s"
+                    "WHERE user.user_id = %s;"
             cursor = self.conn.cursor()
             cursor.execute(query, (user_id, username, password, first_name, last_name, phone, email, is_admin))
             rowcount = cursor.rowcount
@@ -51,7 +51,7 @@ class UserDAO:
 
         def deleteUserById(self, user_id):
             query = "DELETE FROM user" \
-                    "WHERE user_id=%s returning user_id;"
+                    "WHERE user.user_id = %s returning user_id;"
 
             cursor = self.conn.cursor()
             cursor.execute(query, (user_id))
@@ -65,8 +65,8 @@ class UserDAO:
                 "INNER JOIN orders o on ordered_items.order = o.order_id" \
                 "INNER JOIN user u on o.user = u.user_id" \
                 "pc.category_id GROUP BY pc.category_id,pc.name, pc.description ORDER BY SUM(ordered_items.quantity) " \
-                "DESC LIMIT 1;" \
-                "WHERE user_id=%s" 
+                "DESC LIMIT 1" \
+                "WHERE user.user_id = %s;" 
             cursor = self.conn.cursor()
             cursor.execute(query)
             result = cursor.fetchone()
@@ -76,8 +76,8 @@ class UserDAO:
             query = "SELECT u.user_id, product FROM ordered_items" \
                     "INNER JOIN orders o on ordered_items.order = o.order_id" \
                     "INNER JOIN user u on o.user = u.user_id" \
-                    "GROUP BY product ORDER BY SUM(quantity) DESC LIMIT 1 ;" \
-                    "WHERE user_id=%s" 
+                    "GROUP BY product ORDER BY SUM(quantity) DESC LIMIT 1 " \
+                    "WHERE user.user_id = %s;" 
             cursor = self.conn.cursor()
             cursor.execute(query)
             return cursor.fetchone()[0]
@@ -86,8 +86,8 @@ class UserDAO:
             query = "SELECT u.user_id, products.product_id, products.name, products.description, products.price as price, " \
                 "products.inventory, products.times_bought, products.likes, product_categories.name FROM products " \
                 "INNER JOIN product_categories ON products.category = product_categories.category_id " \
-                "ORDER BY products.price ASC;" \
-                "WHERE user_id=%s" 
+                "ORDER BY products.price ASC " \
+                "WHERE user.user_id = %s;" 
             cursor = self.conn.cursor()
             cursor.execute(query)
             return cursor.fetchone()
@@ -97,7 +97,7 @@ class UserDAO:
                 "products.inventory, products.times_bought, products.likes, product_categories.name FROM products " \
                 "INNER JOIN product_categories ON products.category = product_categories.category_id " \
                 "ORDER BY products.price DESC;" \
-                "WHERE user_id=%s" 
+                "WHERE user.user_id = %s;" 
             cursor = self.conn.cursor()
             cursor.execute(query)
             return cursor.fetchone()

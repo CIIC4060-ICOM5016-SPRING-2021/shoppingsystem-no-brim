@@ -66,3 +66,9 @@ class UserController:
 
         d = self.build_dict(result)
         return jsonify(d)
+
+    def checkAdmin(self, user_id):
+        dao = UserDAO()
+        result = dao.checkAdmin(user_id)
+
+        return result

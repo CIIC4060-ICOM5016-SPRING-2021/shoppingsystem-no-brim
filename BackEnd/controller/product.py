@@ -1,5 +1,7 @@
 from flask import jsonify
+
 from dao.product import ProductDAO
+from controller.user import UserController
 
 
 class ProductController:
@@ -70,6 +72,12 @@ class ProductController:
         price = json['Price']
         inventory = json['Inventory']
         categoryid = json['Category']
+        user_id = json['User']
+
+        user_controller = UserController()
+
+        if not (user_controller.checkAdmin(user_id)):
+            return "No Permission", 403
 
         dao = ProductDAO()
         id = dao.insertIntoProducts(name, description, price, inventory, categoryid)
@@ -79,6 +87,12 @@ class ProductController:
     def updateProduct(self, product_id, json):
         price = json['Price']
         inventory = json['Inventory']
+        user_id = json['User']
+
+        user_controller = UserController()
+
+        if not (user_controller.checkAdmin(user_id)):
+            return "No Permission", 403
 
         dao = ProductDAO()
         updated = dao.updateProduct(product_id, price, inventory)
@@ -87,8 +101,15 @@ class ProductController:
         else:
             return jsonify("Not Found"), 404
 
-    def deleteProduct(self, product_id):
+    def deleteProduct(self, product_id, json):
         dao = ProductDAO()
+        user_id = json['User']
+
+        user_controller = UserController()
+
+        if not (user_controller.checkAdmin(user_id)):
+            return "No Permission", 403
+
         result = dao.deleteProductById(product_id)
         if not result:
             return jsonify("Not Found"), 404

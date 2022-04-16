@@ -4,6 +4,7 @@ from controller.product import ProductController
 from controller.order import OrderController
 from controller.cart import CartController
 from controller.liked import LikedController
+from controller.user import UserController
 
 app = Flask(__name__)
 
@@ -163,6 +164,22 @@ def liked_delete_handler(liked_item_id):
         return LikedController().getAllLikes()
     elif request.method == 'DELETE':
         return LikedController().removeLikedItem(liked_item_id)
+
+@app.route('/NO-BRIM/User/most-bought-category/<int:user_id>')
+def user_most_bought_category_handler(user_id):
+    return UserController().getMostBoughtCategory(user_id)
+
+@app.route('/NO-BRIM/User/most-bought-product/<int:user_id>')
+def user_most_bought_product_handler(user_id):
+    return UserController().getMostBoughtProdcut(user_id)
+
+@app.route('/NO-BRIM/User/cheapest-product-bought/<int:user_id>')
+def user_cheapest_product_bought_handler(user_id):
+    return UserController().getCheapestProduct(user_id)
+
+@app.route('/NO-BRIM/User/most-expensive-product-bought/<int:user_id>')
+def user_most_expensive_product_bought_handler(user_id):
+    return UserController().getMostExpensiveProduct(user_id)
 
 
 if __name__ == '__main__':

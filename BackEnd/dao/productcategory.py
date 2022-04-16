@@ -25,9 +25,13 @@ class ProductCategoryDAO:
         query = "SELECT pc.category_id,pc.name, pc.description FROM ordered_items INNER JOIN " \
                 "products p on p.product_id = ordered_items.product INNER JOIN product_categories pc on p.category = " \
                 "pc.category_id GROUP BY pc.category_id,pc.name, pc.description ORDER BY SUM(ordered_items.quantity) " \
-                "DESC LIMIT 1;"
+                "DESC;"
         cursor = self.conn.cursor()
         cursor.execute(query)
-        result = cursor.fetchone()
+        result = []
+        for r in cursor:
+            result.append(r)
+        cursor.close()
+        self.conn.close()
         return result
 

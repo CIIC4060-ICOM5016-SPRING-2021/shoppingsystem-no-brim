@@ -1,5 +1,6 @@
 from flask import jsonify
 from dao.order import OrderDao
+from dao.cart import CartDao
 
 
 class OrderController:
@@ -43,5 +44,26 @@ class OrderController:
             temp.extend(items)
             result.append(temp)
 
+
         return jsonify(result)
-    # def getAllOrders(self):
+
+    def createOrder(self, user_id):
+        dao = OrderDao()
+        c_dao = CartDao()
+
+        cart_items = c_dao.getCart(user_id)
+        c_dao.clearCartItems(user_id)
+
+        order_id = dao.newOrder(user_id)
+
+        for item in cart_items:
+            price = dao.getPrice(item[2])
+            dao.newOrderItem(item[1], price, item[2], order_id)
+
+        result = self.getOrderById(order_id)
+
+        return result
+
+
+
+

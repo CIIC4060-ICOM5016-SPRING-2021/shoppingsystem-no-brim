@@ -87,9 +87,11 @@ def product_bought_handler():
 def product_liked_handler():
     return ProductController().getMostLikedProdcut()
 
+
 @app.route('/NO-BRIM/Products/products/global/cheapest')
 def product_cheapest_handler():
     return ProductController().getCheapestProduct()
+
 
 @app.route('/NO-BRIM/Products/products/global/expensive')
 def product_expensive_handler():
@@ -165,21 +167,33 @@ def liked_delete_handler(liked_item_id):
     elif request.method == 'DELETE':
         return LikedController().removeLikedItem(liked_item_id)
 
+
 @app.route('/NO-BRIM/User/most-bought-category/<int:user_id>')
 def user_most_bought_category_handler(user_id):
     return UserController().getMostBoughtCategory(user_id)
+
 
 @app.route('/NO-BRIM/User/most-bought-product/<int:user_id>')
 def user_most_bought_product_handler(user_id):
     return UserController().getMostBoughtProdcut(user_id)
 
+
 @app.route('/NO-BRIM/User/cheapest-product-bought/<int:user_id>')
 def user_cheapest_product_bought_handler(user_id):
     return UserController().getCheapestProduct(user_id)
 
+
 @app.route('/NO-BRIM/User/most-expensive-product-bought/<int:user_id>')
 def user_most_expensive_product_bought_handler(user_id):
     return UserController().getMostExpensiveProduct(user_id)
+
+
+@app.route('/NO-BRIM/Order/buy-cart', methods=['GET', 'POST'])
+def buy_cart(user_id):
+    if request.method == 'GET':
+        return CartController().getCart(user_id)
+    elif request.method == 'POST':
+        return OrderController().createOrder(user_id)
 
 
 if __name__ == '__main__':

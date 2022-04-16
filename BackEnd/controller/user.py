@@ -1,5 +1,7 @@
+from unittest import result
 from flask import jsonify
 from dao.user import UserDAO
+
 
 class UserController:
 
@@ -63,12 +65,45 @@ class UserController:
         result = dao.deleteUserById(user_id)
         if not result:
             return jsonify("Not Found"), 404
-
         d = self.build_dict(result)
         return jsonify(d)
 
+
+    # User statistics
+    
+    def getMostBoughtCategory(self, user_id):
+        dao = UserDAO()
+        result = dao.getMostBoughtCategory(user_id)
+        if not result:
+            return jsonify("Not Found"), 404
+        d = self.build_dict(result)
+        return jsonify(d)
+
+    def getMostBoughtProdcut(self, user_id):
+        dao = UserDAO()
+        result = dao.getMostBoughtProdcut(user_id)
+        if not result:
+            return jsonify("Not Found"), 404
+        d = self.build_dict(result)
+        return jsonify(d)
+
+    def getCheapestProduct(self, user_id):
+        dao = UserDAO()
+        result = dao.getCheapestProduct(user_id)
+        if not result:
+            return jsonify("Not Found"), 404
+        d = self.build_dict(result)
+        return jsonify(d)
+
+    def getMostExpensiveProduct(self, user_id):
+        dao = UserDAO()
+        result = dao.getMostExpensiveProduct(user_id)
+        if not result:
+            return jsonify("Not Found"), 404
+        d = self.build_dict(result)
+        return jsonify(d)
+    
     def checkAdmin(self, user_id):
         dao = UserDAO()
         result = dao.checkAdmin(user_id)
-
         return result

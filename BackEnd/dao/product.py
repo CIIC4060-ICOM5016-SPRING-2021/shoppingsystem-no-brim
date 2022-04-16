@@ -135,7 +135,7 @@ class ProductDAO:
                 "INNER JOIN product_categories ON products.category = product_categories.category_id " \
                 "WHERE product.isactive = true ORDER BY products.price ASC;"
         cursor = self.conn.cursor()
-        cursor.execute(query,)
+        cursor.execute(query)
         return cursor.fetchone()
 
     def getMostExpensiveProduct(self):
@@ -145,6 +145,6 @@ class ProductDAO:
                 "WHERE products.isactive = true" \
                 " ORDER BY products.price DESC;"
         cursor = self.conn.cursor()
-        cursor.execute(query,)
+        cursor.execute(query)
         return cursor.fetchone()
 

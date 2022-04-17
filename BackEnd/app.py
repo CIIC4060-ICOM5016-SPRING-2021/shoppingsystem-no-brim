@@ -4,6 +4,7 @@ from controller.product import ProductController
 from controller.order import OrderController
 from controller.cart import CartController
 from controller.liked import LikedController
+from controller.user import UserController
 
 app = Flask(__name__)
 
@@ -163,6 +164,40 @@ def liked_delete_handler(liked_item_id):
         return LikedController().getAllLikes()
     elif request.method == 'DELETE':
         return LikedController().removeLikedItem(liked_item_id)
+
+
+ ############### USER ROUTES #########################################
+@app.route('/NO-BRIM/Users/users')
+def user_handler():
+    return UserController().getAllUsers()
+
+@app.route('/NO-BRIM/Users/users/<int:user_id>')
+def user_byid_handler(user_id):
+    return UserController().getUserById(user_id)
+
+
+@app.route('/NO-BRIM/Users/users/create_User', methods=['GET', 'POST'])
+def create_user_handler():
+    if request.method == 'GET':
+        return UserController().getAllUsers()
+    elif request.method == 'POST':
+        return UserController().addNewUser(request.json)
+
+@app.route('/NO-BRIM/Users/users/delete_User/<int:user_id>', methods=['GET', 'DELETE'])
+def delete_user_byid_handler(user_id):
+    if request.method == 'GET':
+        return UserController().getAllUsers()
+    elif request.method == 'DELETE':
+        return UserController().deleteUserById(user_id)
+
+@app.route('/NO-BRIM/Users/users/update/<int:user_id>', methods=['GET', 'PUT'])
+def user_update_handler(user_id):
+    if request.method == 'GET':
+        return UserController().getUserByID(user_id)
+    elif request.method == 'PUT':
+        return UserController().updateUser(user_id, request.json)
+
+
 
 
 if __name__ == '__main__':

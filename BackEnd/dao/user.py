@@ -12,8 +12,7 @@ class UserDAO:
         self.conn = psycopg2.connect(connection_url)
 
     def getAllUsers(self):
-        query = "SELECT user.user_id,user.username,user.password,user.first_name,user.last_name,user.phone,user.email" \
-                "FROM user;"
+        query = 'SELECT user_id,username,password,first_name,last_name,phone,email,created_at,is_admin FROM "user";'
         cursor = self.conn.cursor()
         cursor.execute(query)
         result = []
@@ -23,16 +22,13 @@ class UserDAO:
         return result
 
     def getUserById(self, user_id):
-        query = "SELECT user.user_id,user.username,user.password,user.first_name,user_last_name,user.phone,user.email" \
-                "FROM user " \
-                "WHERE user.user_id = %s;"
+        query = 'SELECT user_id,username,password,first_name,last_name,phone,email,created_at,is_admin FROM "user" WHERE user_id = %s;'
         cursor = self.conn.cursor()
-        cursor.execute(query, (user_id,))
+        cursor.execute(query, (user_id, ))
         return cursor.fetchone()
 
     def createUser(self, username, password, first_name, last_name, phone, email, is_admin):
-        query = "INSERT INTO user (username,password,first_name,last_name,phone,email,created_at,is_admin)" \
-                "VALUES (%s,%s,%s,%s,%s,%s,%s) returning user_id;"
+        query = 'INSERT INTO "user" (username,password,first_name,last_name,phone,email,created_at,is_admin) VALUES (%s,%s,%s,%s,%s,%s,%s,%s) returning user_id;'
         dt = datetime.now()
         cursor = self.conn.cursor()
         cursor.execute(query, (username, password, first_name, last_name, phone, email, dt, is_admin))
@@ -40,21 +36,24 @@ class UserDAO:
         self.conn.commit()
         return user_id
 
-    def updateUser(self, user_id, username, password, first_name, last_name, phone, email, is_admin):
-        query = "UPDATE user SET user_id=%s, username=%s,password=%s,first_name=%s,last_name=%s,phone=%s,email=%s,is_admin=%s" \
-                "WHERE user.user_id = %s;"
+    def updateUser(self,user_id, username, password, first_name, last_name, phone, email, is_admin):
+        query = 'UPDATE "user" SET username=%s,password=%s,first_name=%s,last_name=%s,phone=%s,email=%s,is_admin=%s WHERE user_id=%s'
         cursor = self.conn.cursor()
-        cursor.execute(query, (user_id, username, password, first_name, last_name, phone, email, is_admin))
+        cursor.execute(query, (username, password, first_name, last_name, phone, email, is_admin,user_id))
         rowcount = cursor.rowcount
         self.conn.commit()
         return rowcount != 0
 
     def deleteUserById(self, user_id):
-        query = "DELETE FROM user" \
-                "WHERE user.user_id = %s returning user_id;"
+        query = 'DELETE FROM "user" WHERE user_id = %s returning user_id;'
         cursor = self.conn.cursor()
-        cursor.execute(query, (user_id))
-        id = cursor.fetchone()[0]
+        cursor.execute(query, (user_id, ))
+
+        try:
+            id = cursor.fetchone()[0]
+        except:
+            return
+
         self.conn.commit()
         return id
 
@@ -65,7 +64,7 @@ class UserDAO:
                 "INNER JOIN user u on o.user = u.user_id " \
                 "pc.category_id GROUP BY pc.category_id,pc.name, pc.description ORDER BY SUM(ordered_items.quantity) " \
                 "DESC LIMIT 1 " \
-                "WHERE u.user_id = %s;" 
+                "WHERE u.user_id = %s;"
         cursor = self.conn.cursor()
         cursor.execute(query)
         result = cursor.fetchone()
@@ -77,7 +76,7 @@ class UserDAO:
                 "INNER JOIN orders o on ordered_items.order = o.order_id " \
                 "INNER JOIN user u on o.user = u.user_id " \
                 "GROUP BY product ORDER BY SUM(quantity) DESC LIMIT 1 " \
-                "WHERE u.user_id = %s;" 
+                "WHERE u.user_id = %s;"
         cursor = self.conn.cursor()
         cursor.execute(query)
         return cursor.fetchone()[0]
@@ -89,7 +88,7 @@ class UserDAO:
                 "INNER JOIN orders o on ordered_items.order = o.order_id " \
                 "INNER JOIN user u on o.user = u.user_id " \
                 "ORDER BY price ASC " \
-                "WHERE u.user_id = %s;" 
+                "WHERE u.user_id = %s;"
         cursor = self.conn.cursor()
         cursor.execute(query)
         return cursor.fetchone()
@@ -101,15 +100,15 @@ class UserDAO:
                 "INNER JOIN orders o on ordered_items.order = o.order_id " \
                 "INNER JOIN user u on o.user = u.user_id " \
                 "ORDER BY price DESC " \
-                "WHERE u.user_id = %s;" 
+                "WHERE u.user_id = %s;"
         cursor = self.conn.cursor()
         cursor.execute(query)
         return cursor.fetchone()
 
     def checkAdmin(self,user_id):
-        query = 'SELECT is_admin FROM "user" WHERE user_id=%s;'
+        query = 'SELECT is_admin FROM "user" WHERE user_id=%s ;'
         cursor = self.conn.cursor()
-        cursor.execute(query, (user_id))
+        cursor.execute(query, (user_id, ))
         result = cursor.fetchone()[0]
         return result
 

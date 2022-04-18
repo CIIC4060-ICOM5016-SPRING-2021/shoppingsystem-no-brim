@@ -7,7 +7,7 @@ from controller.user import UserController
 class ProductController:
     def build_dict(self, row):
         result = {'product_id': row[0], 'name': row[1], 'description': row[2], 'price': row[3],
-                  'inventory': row[4], 'times_bought': row[5], 'likes': row[6], 'category': row[7]}
+                  'inventory': row[4], 'category': row[5]}
         return result
 
     def getAllProducts(self):

@@ -114,8 +114,8 @@ class ProductController:
         if not result:
             return jsonify("Not Found"), 404
 
-        d = self.build_dict(result)
-        return jsonify(d)
+        d = self.getProductById(result)
+        return jsonify(result)
 
     def getMostBoughtProduct(self):
         dao = ProductDAO()

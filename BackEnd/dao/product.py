@@ -108,7 +108,7 @@ class ProductDAO:
         return rowcount != 0
 
     def deleteProductById(self, product_id):
-        query = "UPDATE products SET 'isActive'=false WHERE product_id=%s"
+        query = "UPDATE products SET isActive=false WHERE product_id=%s returning product_id"
         cursor = self.conn.cursor()
         cursor.execute(query, (product_id,))
         id = cursor.fetchone()[0]

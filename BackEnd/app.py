@@ -69,7 +69,7 @@ def product_delete_handler(product_id):
     if request.method == 'GET':
         return ProductController().getProductById(product_id)
     elif request.method == 'PUT':
-        return ProductController().deleteProduct(product_id)
+        return ProductController().deleteProduct(product_id, request.json)
 
 
 @app.route('/NO-BRIM/Products/products/global/bought')

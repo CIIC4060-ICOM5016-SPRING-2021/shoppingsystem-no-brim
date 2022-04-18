@@ -78,7 +78,7 @@ class UserController:
         if not result:
             return jsonify("Not Found"), 404
 
-        return result
+        return jsonify(result)
 
         # User statistics
 

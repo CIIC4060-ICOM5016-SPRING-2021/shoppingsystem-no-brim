@@ -13,7 +13,7 @@ class ProductDAO:
 
     def getAllProducts(self):
         query = "SELECT products.product_id, products.name, products.description, products.price, products.inventory, " \
-                "products.times_bought, products.likes, product_categories.name FROM products " \
+                "product_categories.name FROM products " \
                 "INNER JOIN product_categories ON products.category = product_categories.category_id " \
                 "WHERE products.isactive = true ;"
         cursor = self.conn.cursor()
@@ -26,9 +26,9 @@ class ProductDAO:
 
     def getProductById(self, product_id):
         query = "SELECT products.product_id, products.name, products.description, products.price, products.inventory, " \
-                "products.times_bought, products.likes, product_categories.name FROM products " \
+                "product_categories.name FROM products " \
                 "INNER JOIN product_categories ON products.category = product_categories.category_id " \
-                "WHERE products.product_id = '%s' AND products.isactive = true ;"
+                "WHERE products.product_id = %s AND products.isactive = true ;"
         cursor = self.conn.cursor()
         cursor.execute(query, (product_id,))
         return cursor.fetchone()
@@ -36,16 +36,16 @@ class ProductDAO:
     def getProductByPrice(self, order):
         if order == "ASC":
             query = "SELECT products.product_id, products.name, products.description, products.price, products.inventory, " \
-                    "products.times_bought, products.likes, product_categories.name FROM products " \
+                    "product_categories.name FROM products " \
                     "INNER JOIN product_categories ON products.category = product_categories.category_id " \
                     "WHERE products.isactive = true" \
-                    " ORDER BY products.price ASC ;"
+                    "ORDER BY products.price ASC ;"
         elif order == "DESC":
             query = "SELECT products.product_id, products.name, products.description, products.price, products.inventory, " \
-                    "products.times_bought, products.likes, product_categories.name FROM products " \
+                    "product_categories.name FROM products " \
                     "INNER JOIN product_categories ON products.category = product_categories.category_id  " \
                     "WHERE products.isactive = true" \
-                    " ORDER BY products.price DESC;"
+                    "ORDER BY products.price DESC;"
         cursor = self.conn.cursor()
         cursor.execute(query)
         result = []
@@ -57,16 +57,16 @@ class ProductDAO:
     def getProductByName(self, order):
         if order == "ASC":
             query = "SELECT products.product_id, products.name, products.description, products.price, " \
-                    "products.inventory, products.times_bought, products.likes, product_categories.name FROM products "\
+                    "products.inventory,product_categories.name FROM products "\
                     "INNER JOIN product_categories ON products.category = product_categories.category_id " \
                     "WHERE products.isactive = true" \
-                    " ORDER BY products.name ASC;"
+                    "ORDER BY products.name ASC;"
         elif order == "DESC":
             query = "SELECT products.product_id, products.name, products.description, products.price, " \
-                    "products.inventory, products.times_bought, products.likes, product_categories.name FROM products "\
+                    "products.inventory, product_categories.name FROM products "\
                     "INNER JOIN product_categories ON products.category = product_categories.category_id " \
                     "WHERE products.isactive = true " \
-                    "ORDER BY products.name DESC ;"
+                    "ORDER BY products.name DESC;"
         cursor = self.conn.cursor()
         cursor.execute(query)
         result = []
@@ -77,7 +77,7 @@ class ProductDAO:
 
     def getProductsByCategory(self, category_id):
         query = "SELECT products.product_id, products.name, products.description, products.price, products.inventory, " \
-                "products.times_bought, products.likes, product_categories.name FROM products " \
+                "product_categories.name FROM products " \
                 "INNER JOIN product_categories ON products.category = product_categories.category_id " \
                 "WHERE products.category = '%s' AND products.isactive = true;"
         cursor = self.conn.cursor()
@@ -89,7 +89,7 @@ class ProductDAO:
         return result
 
     def insertIntoProducts(self, name, description, price, inventory, categoryid):
-        query = "INSERT INTO products (name, description, price, inventory, category, times_bought, likes, " \
+        query = "INSERT INTO products (name, description, price, inventory, category," \
                 "created_at) VALUES (%s ,%s ,%s ,%s ,%s ,%s ,%s, %s) returning product_id;"
         dt = datetime.now()
         cursor = self.conn.cursor()
@@ -128,26 +128,26 @@ class ProductDAO:
 
     def getMostLikedProdcut(self):
         query = "SELECT liked_items.product FROM liked_items INNER JOIN products p on p.product_id = liked_items.product" \
-                " WHERE p.isactive = true GROUP BY product ORDER BY COUNT(liked_item_id) DESC LIMIT 1;"
+                "WHERE p.isactive = true GROUP BY product ORDER BY COUNT(liked_item_id) DESC LIMIT 1;"
         cursor = self.conn.cursor()
         cursor.execute(query)
         return cursor.fetchone()[0]
 
     def getCheapestProduct(self):
         query = "SELECT products.product_id, products.name, products.description, products.price as price, " \
-                "products.inventory, products.times_bought, products.likes, product_categories.name FROM products " \
+                "products.inventory, product_categories.name FROM products " \
                 "INNER JOIN product_categories ON products.category = product_categories.category_id " \
-                "WHERE product.isactive = true ORDER BY products.price ASC;"
+                "WHERE products.isactive = true ORDER BY products.price ASC;"
         cursor = self.conn.cursor()
         cursor.execute(query)
         return cursor.fetchone()
 
     def getMostExpensiveProduct(self):
         query = "SELECT products.product_id, products.name, products.description, products.price as price, " \
-                "products.inventory, products.times_bought, products.likes, product_categories.name FROM products " \
+                "products.inventory, product_categories.name FROM products " \
                 "INNER JOIN product_categories ON products.category = product_categories.category_id " \
                 "WHERE products.isactive = true" \
-                " ORDER BY products.price DESC;"
+                "ORDER BY products.price DESC;"
         cursor = self.conn.cursor()
         cursor.execute(query)
         return cursor.fetchone()

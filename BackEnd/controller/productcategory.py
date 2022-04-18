@@ -21,11 +21,15 @@ class ProductCategoryController:
 
     def getMostBoughtCategory(self):
         dao = ProductCategoryDAO()
-        result = dao.getMostBoughtCategory()
-        if not result:
+        result_t = dao.getMostBoughtCategory()
+        if not result_t:
             return jsonify("Not Found"), 404
 
-        d = self.build_dict(result)
+        result = []
+        for r in result_t:
+            d = self.build_dict(r)
+            result.append(d)
+
         return jsonify(d)
 
 

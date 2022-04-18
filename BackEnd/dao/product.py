@@ -117,10 +117,14 @@ class ProductDAO:
     def getMostBoughtProdcut(self):
         query = "SELECT ordered_items.product FROM ordered_items INNER JOIN products p on p.product_id = " \
                 "ordered_items.product WHERE p.isactive GROUP BY ordered_items.product ORDER BY SUM(quantity) " \
-                "DESC LIMIT 1;"
+                "DESC;"
         cursor = self.conn.cursor()
         cursor.execute(query)
-        return cursor.fetchone()[0]
+        result = []
+        for r in cursor:
+            result.append(r)
+        cursor.close()
+        return result
 
     def getMostLikedProdcut(self):
         query = "SELECT liked_items.product FROM liked_items INNER JOIN products p on p.product_id = liked_items.product" \

@@ -12,7 +12,7 @@ class UserController:
 
     def build_product_dict(self, row):
         result = {'product_id': row[0], 'name': row[1], 'description': row[2], 'price': row[3],
-                  'inventory': row[4], 'times_bought': row[5], 'likes': row[6], 'category': row[7]}
+                  'inventory': row[4],'category': row[5]}
         return result
 
     def build_product_category_dict(self, row):

@@ -69,7 +69,7 @@ class UserDAO:
         return result
 
     def getRankMostBoughtProdcut(self, user_id):
-        query = 'SELECT oi.product FROM "user" as u INNER JOIN orders o on u.user_id = o."user" INNER JOIN ordered_items oi on o.order_id = oi."order" WHERE u.user_id = %s GROUP BY oi.product ORDER BY SUM(oi.quantity) DESC;'
+        query = 'SELECT products.product_id, products.name, products.description, products.price as price, products.inventory, product_categories.name FROM products INNER JOIN product_categories ON products.category = product_categories.category_id INNER JOIN ordered_items on products.product_id = ordered_items.product INNER JOIN orders o on ordered_items.order = o.order_id INNER JOIN "user" u on o.user = u.user_id WHERE u.user_id = %s AND products.isactive = true ORDER BY price ASC;'
         cursor = self.conn.cursor()
         cursor.execute(query, (user_id, ))
         result = []
@@ -78,13 +78,13 @@ class UserDAO:
         return result        
 
     def getCheapestProduct(self, user_id):
-        query = 'SELECT products.product_id, products.name, products.description, products.price as price, products.inventory, product_categories.name FROM products INNER JOIN product_categories ON products.category = product_categories.category_id INNER JOIN ordered_items on products.product_id = ordered_items.product INNER JOIN orders o on ordered_items.order = o.order_id INNER JOIN "user" u on o.user = u.user_id WHERE u.user_id = %s ORDER BY price ASC;'
+        query = 'SELECT products.product_id, products.name, products.description, products.price as price, products.inventory, product_categories.name FROM products INNER JOIN product_categories ON products.category = product_categories.category_id INNER JOIN ordered_items on products.product_id = ordered_items.product INNER JOIN orders o on ordered_items.order = o.order_id INNER JOIN "user" u on o.user = u.user_id WHERE u.user_id = %s AND products.isactive = true ORDER BY price ASC;'
         cursor = self.conn.cursor()
         cursor.execute(query, (user_id, ))
         return cursor.fetchone()
 
     def getMostExpensiveProduct(self, user_id):
-        query = 'SELECT products.product_id, products.name, products.description, products.price as price, products.inventory, product_categories.name FROM products INNER JOIN product_categories ON products.category = product_categories.category_id INNER JOIN ordered_items on products.product_id = ordered_items.product INNER JOIN orders o on ordered_items.order = o.order_id INNER JOIN "user" u on o.user = u.user_id WHERE u.user_id = %s ORDER BY price DESC;'
+        query = 'SELECT products.product_id, products.name, products.description, products.price as price, products.inventory, product_categories.name FROM products INNER JOIN product_categories ON products.category = product_categories.category_id INNER JOIN ordered_items on products.product_id = ordered_items.product INNER JOIN orders o on ordered_items.order = o.order_id INNER JOIN "user" u on o.user = u.user_id WHERE u.user_id = %s AND products.isactive = true ORDER BY price DESC;'
         cursor = self.conn.cursor()
         cursor.execute(query, (user_id, ))
         return cursor.fetchone()

@@ -39,13 +39,13 @@ class ProductDAO:
                     "product_categories.name FROM products " \
                     "INNER JOIN product_categories ON products.category = product_categories.category_id " \
                     "WHERE products.isactive = true" \
-                    "ORDER BY products.price ASC ;"
+                    " ORDER BY products.price ASC ;"
         elif order == "DESC":
             query = "SELECT products.product_id, products.name, products.description, products.price, products.inventory, " \
                     "product_categories.name FROM products " \
                     "INNER JOIN product_categories ON products.category = product_categories.category_id  " \
                     "WHERE products.isactive = true" \
-                    "ORDER BY products.price DESC;"
+                    " ORDER BY products.price DESC;"
         cursor = self.conn.cursor()
         cursor.execute(query)
         result = []
@@ -60,7 +60,7 @@ class ProductDAO:
                     "products.inventory,product_categories.name FROM products "\
                     "INNER JOIN product_categories ON products.category = product_categories.category_id " \
                     "WHERE products.isactive = true" \
-                    "ORDER BY products.name ASC;"
+                    " ORDER BY products.name ASC;"
         elif order == "DESC":
             query = "SELECT products.product_id, products.name, products.description, products.price, " \
                     "products.inventory, product_categories.name FROM products "\
@@ -90,12 +90,13 @@ class ProductDAO:
 
     def insertIntoProducts(self, name, description, price, inventory, categoryid):
         query = "INSERT INTO products (name, description, price, inventory, category," \
-                "created_at) VALUES (%s ,%s ,%s ,%s ,%s ,%s ,%s, %s) returning product_id;"
+                "created_at) VALUES (%s ,%s ,%s ,%s ,%s ,%s) returning product_id;"
         dt = datetime.now()
         cursor = self.conn.cursor()
-        cursor.execute(query, (name, description, price, inventory, categoryid, 0, 0, dt,))
+        cursor.execute(query, (name, description, price, inventory, categoryid, dt,))
         product_id = cursor.fetchone()[0]
         self.conn.commit()
+        self.conn.close()
         return product_id
 
     def updateProduct(self, product_id, price, inventory):
@@ -128,10 +129,13 @@ class ProductDAO:
 
     def getMostLikedProduct(self):
         query = "SELECT liked_items.product FROM liked_items INNER JOIN products p on p.product_id = liked_items.product" \
-                "WHERE p.isactive = true GROUP BY product ORDER BY COUNT(liked_item_id) DESC LIMIT 1;"
+                " WHERE p.isactive GROUP BY product ORDER BY COUNT(liked_item_id) DESC LIMIT 1;"
         cursor = self.conn.cursor()
         cursor.execute(query)
-        return cursor.fetchone()[0]
+        try:
+            return cursor.fetchone()[0]
+        except:
+            return
 
     def getCheapestProduct(self):
         query = "SELECT products.product_id, products.name, products.description, products.price as price, " \
@@ -147,7 +151,7 @@ class ProductDAO:
                 "products.inventory, product_categories.name FROM products " \
                 "INNER JOIN product_categories ON products.category = product_categories.category_id " \
                 "WHERE products.isactive = true" \
-                "ORDER BY products.price DESC;"
+                " ORDER BY products.price DESC;"
         cursor = self.conn.cursor()
         cursor.execute(query)
         return cursor.fetchone()

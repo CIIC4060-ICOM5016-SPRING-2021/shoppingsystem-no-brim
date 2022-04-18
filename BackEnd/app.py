@@ -74,12 +74,12 @@ def product_delete_handler(product_id):
 
 @app.route('/NO-BRIM/Products/products/global/bought')
 def product_bought_handler():
-    return ProductController().getMostBoughtProdcut()
+    return ProductController().getMostBoughtProduct()
 
 
 @app.route('/NO-BRIM/Products/products/global/liked')
 def product_liked_handler():
-    return ProductController().getMostLikedProdcut()
+    return ProductController().getMostLikedProduct()
 
 
 @app.route('/NO-BRIM/Products/products/global/cheapest')
@@ -212,7 +212,7 @@ def user_update_handler(user_id):
         return UserController().updateUser(user_id, request.json)
 
 
-@app.route('/NO-BRIM/Order/buy-cart', methods=['GET', 'POST'])
+@app.route('/NO-BRIM/Order/buy-cart/<int:user_id>', methods=['GET', 'POST'])
 def buy_cart(user_id):
     if request.method == 'GET':
         return CartController().getCart(user_id)

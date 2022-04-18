@@ -93,14 +93,14 @@ class UserController:
 
         cat_ids = dao.getRankMostBoughtCategory(user_id)
 
-        if not result:
+        for i in cat_ids:
+            result_t.append(prod_cat_dao.getProductCategoryById(i[0]))
+
+        if not result_t:
             return jsonify("Not Found"), 404
 
-        for i in cat_ids:
-            result_t.append(prod_cat_dao.getProductCategoryById(i))
-
         for r in result_t:
-            d = self.build_product_dict(r)
+            d = self.build_product_category_dict(r)
             result.append(d)
 
         return jsonify(result)

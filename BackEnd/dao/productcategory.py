@@ -11,9 +11,9 @@ class ProductCategoryDAO:
         self.conn = psycopg2.connect(connection_url)
 
     def getProductCategoryById(self, product_category_id):
-        query = "SELECT pc.category_id, pc.name, pc.description, pc.created_at FROM product_categories as pc WHERE pc.category_id = %s;"
+        query = "SELECT pc.category_id, pc.name, pc.description FROM product_categories as pc WHERE pc.category_id = %s;"
         cursor = self.conn.cursor()
-        cursor.execute(query, (product_category_id,))
+        cursor.execute(query, (product_category_id, ))
         return cursor.fetchone()
 
     def getAllCategories(self):

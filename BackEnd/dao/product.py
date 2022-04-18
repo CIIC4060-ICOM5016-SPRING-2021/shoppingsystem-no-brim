@@ -114,7 +114,7 @@ class ProductDAO:
         self.conn.commit()
         return id
 
-    def getMostBoughtProdcut(self):
+    def getMostBoughtProduct(self):
         query = "SELECT ordered_items.product FROM ordered_items INNER JOIN products p on p.product_id = " \
                 "ordered_items.product WHERE p.isactive GROUP BY ordered_items.product ORDER BY SUM(quantity) " \
                 "DESC;"
@@ -126,7 +126,7 @@ class ProductDAO:
         cursor.close()
         return result
 
-    def getMostLikedProdcut(self):
+    def getMostLikedProduct(self):
         query = "SELECT liked_items.product FROM liked_items INNER JOIN products p on p.product_id = liked_items.product" \
                 "WHERE p.isactive = true GROUP BY product ORDER BY COUNT(liked_item_id) DESC LIMIT 1;"
         cursor = self.conn.cursor()

@@ -117,9 +117,9 @@ class ProductController:
         d = self.build_dict(result)
         return jsonify(d)
 
-    def getMostBoughtProdcut(self):
+    def getMostBoughtProduct(self):
         dao = ProductDAO()
-        result_t = dao.getMostBoughtProdcut()
+        result_t = dao.getMostBoughtProduct()
         if not result_t:
             return jsonify("Not Found"), 404
 
@@ -130,9 +130,9 @@ class ProductController:
 
         return jsonify(result)
 
-    def getMostLikedProdcut(self):
+    def getMostLikedProduct(self):
         dao = ProductDAO()
-        product_id = dao.getMostLikedProdcut()
+        product_id = dao.getMostLikedProduct()
         result = dao.getProductById(product_id)
         if not result:
             return jsonify("Not Found"), 404

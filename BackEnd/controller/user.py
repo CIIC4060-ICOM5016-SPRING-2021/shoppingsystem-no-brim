@@ -130,7 +130,7 @@ class UserController:
         result = dao.getCheapestProduct(user_id)
         if not result:
             return jsonify("Not Found"), 404
-        d = self.build_dict(result)
+        d = self.build_product_dict(result)
         return jsonify(d)
 
     def getMostExpensiveProduct(self, user_id):
@@ -138,7 +138,7 @@ class UserController:
         result = dao.getMostExpensiveProduct(user_id)
         if not result:
             return jsonify("Not Found"), 404
-        d = self.build_dict(result)
+        d = self.build_product_dict(result)
         return jsonify(d)
 
     def checkAdmin(self, user_id):

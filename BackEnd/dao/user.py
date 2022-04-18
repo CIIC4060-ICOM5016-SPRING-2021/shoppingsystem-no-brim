@@ -58,52 +58,35 @@ class UserDAO:
         self.conn.commit()
         return id
 
-    def getMostBoughtCategory(self, user_id):
-        query = "SELECT u.user_id, pc.category_id,pc.name, pc.description FROM ordered_items INNER JOIN " \
-                "products p on p.product_id = ordered_items.product INNER JOIN product_categories pc on p.category = " \
-                "INNER JOIN orders o on ordered_items.order = o.order_id " \
-                "INNER JOIN user u on o.user = u.user_id " \
-                "pc.category_id GROUP BY pc.category_id,pc.name, pc.description ORDER BY SUM(ordered_items.quantity) " \
-                "DESC LIMIT 1 " \
-                "WHERE u.user_id = %s;" 
+    # Need further testing
+    def getRankMostBoughtCategory(self, user_id):
+        query = 'SELECT pc.category_id, pc.name, pc.description FROM ordered_items as oi INNER JOIN products p on oi.product = p.product_id INNER JOIN product_categories pc on p.category = pc.category_id INNER JOIN orders o on oi."order" = o.order_id INNER JOIN "user" u on o."user" = u.user_id WHERE u.user_id = %s GROUP BY pc.category_id ORDER BY SUM(oi.quantity) DESC;'
         cursor = self.conn.cursor()
-        cursor.execute(query)
-        result = cursor.fetchone()
+        cursor.execute(query, (user_id, ))
+        result = []
+        for r in cursor:
+            result.append(r)
         return result
 
-    # Maybe have to add more product info?
-    def getMostBoughtProdcut(self, user_id):
-        query = "SELECT u.user_id, product FROM ordered_items " \
-                "INNER JOIN orders o on ordered_items.order = o.order_id " \
-                "INNER JOIN user u on o.user = u.user_id " \
-                "GROUP BY product ORDER BY SUM(quantity) DESC LIMIT 1 " \
-                "WHERE u.user_id = %s;" 
+    def getRankMostBoughtProdcut(self, user_id):
+        query = 'SELECT oi.product FROM "user" as u INNER JOIN orders o on u.user_id = o."user" INNER JOIN ordered_items oi on o.order_id = oi."order" WHERE u.user_id = %s GROUP BY oi.product ORDER BY SUM(oi.quantity) DESC;'
         cursor = self.conn.cursor()
-        cursor.execute(query)
-        return cursor.fetchone()[0]
+        cursor.execute(query, (user_id, ))
+        result = []
+        for r in cursor:
+            result.append(r)
+        return result        
 
     def getCheapestProduct(self, user_id):
-        query = "SELECT u.user_id, products.product_id, products.name, products.description, products.price as price, " \
-                "products.inventory, products.times_bought, products.likes, product_categories.name FROM products " \
-                "INNER JOIN product_categories ON products.category = product_categories.category_id " \
-                "INNER JOIN orders o on ordered_items.order = o.order_id " \
-                "INNER JOIN user u on o.user = u.user_id " \
-                "ORDER BY price ASC " \
-                "WHERE u.user_id = %s;" 
+        query = 'SELECT products.product_id, products.name, products.description, products.price as price, products.inventory, product_categories.name FROM products INNER JOIN product_categories ON products.category = product_categories.category_id INNER JOIN ordered_items on products.product_id = ordered_items.product INNER JOIN orders o on ordered_items.order = o.order_id INNER JOIN "user" u on o.user = u.user_id WHERE u.user_id = %s ORDER BY price ASC;'
         cursor = self.conn.cursor()
-        cursor.execute(query)
+        cursor.execute(query, (user_id, ))
         return cursor.fetchone()
 
     def getMostExpensiveProduct(self, user_id):
-        query = "SELECT u.user_id, products.product_id, products.name, products.description, products.price as price, " \
-                "products.inventory, products.times_bought, products.likes, product_categories.name FROM products " \
-                "INNER JOIN product_categories ON products.category = product_categories.category_id " \
-                "INNER JOIN orders o on ordered_items.order = o.order_id " \
-                "INNER JOIN user u on o.user = u.user_id " \
-                "ORDER BY price DESC " \
-                "WHERE u.user_id = %s;" 
+        query = 'SELECT products.product_id, products.name, products.description, products.price as price, products.inventory, product_categories.name FROM products INNER JOIN product_categories ON products.category = product_categories.category_id INNER JOIN ordered_items on products.product_id = ordered_items.product INNER JOIN orders o on ordered_items.order = o.order_id INNER JOIN "user" u on o.user = u.user_id WHERE u.user_id = %s ORDER BY price DESC;'
         cursor = self.conn.cursor()
-        cursor.execute(query)
+        cursor.execute(query, (user_id, ))
         return cursor.fetchone()
 
     def checkAdmin(self,user_id):

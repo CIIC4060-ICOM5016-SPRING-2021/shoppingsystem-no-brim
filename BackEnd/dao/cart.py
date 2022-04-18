@@ -12,7 +12,7 @@ class CartDao:
         self.conn = psycopg2.connect(connection_url)
 
     def getCart(self, user_id):
-        query = 'SELECT cart_item_id, quantity, product, user FROM cart_items WHERE "user" = %s;'
+        query = 'SELECT cart_item_id, quantity, product, "user" FROM cart_items WHERE "user" = %s;'
         cursor = self.conn.cursor()
         cursor.execute(query, (user_id,))
         result = []
@@ -22,7 +22,7 @@ class CartDao:
         return result
 
     def getAllCarts(self):
-        query = "SELECT cart_item_id, quantity, product, user FROM cart_items;"
+        query = 'SELECT cart_item_id, quantity, product, "user" FROM cart_items;'
         cursor = self.conn.cursor()
         cursor.execute(query)
         result = []

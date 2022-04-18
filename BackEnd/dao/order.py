@@ -23,13 +23,13 @@ class OrderDao:
         return result
 
     def getOrderById(self, order_id):
-        query = "SELECT order_id, user, date_ordered, total_cost FROM orders WHERE order_id = %s;"
+        query = 'SELECT order_id, "user", date_ordered, total_cost FROM orders WHERE order_id = %s;'
         cursor = self.conn.cursor()
         cursor.execute(query, (order_id,))
         return cursor.fetchone()
 
     def getAllOrders(self):
-        query = "SELECT order_id, user, date_ordered, total_cost FROM orders;"
+        query = 'SELECT order_id, "user", date_ordered, total_cost FROM orders;'
         cursor = self.conn.cursor()
         cursor.execute(query)
         result = []

@@ -7,7 +7,7 @@ function WishList() {
     const [data, setData] = useState('');
 
     const getWishlist = () => {
-        axios.get("http://127.0.0.1:5000//NO-BRIM/Liked/liked_items/"+ localStorage.getItem("user_id"))
+        axios.get("https://db-class-22.herokuapp.com/NO-BRIM/Liked/liked_items/"+ localStorage.getItem("user_id"))
             .then((response)=>{
                 setData(response.data)
             })

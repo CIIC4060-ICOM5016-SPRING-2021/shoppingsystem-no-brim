@@ -19,7 +19,7 @@ function HomePage() {
     const handleSubmit = (event) => {
         event.preventDefault();
         // console.log(inputs);
-        axios.post('http://127.0.0.1:5000//NO-BRIM/Users/users/login', inputs)
+        axios.post('https://db-class-22.herokuapp.com//NO-BRIM/Users/users/login', inputs)
             .then(res => {
                 console.log(res);
                 console.log(res.data);

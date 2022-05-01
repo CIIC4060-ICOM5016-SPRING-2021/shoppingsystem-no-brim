@@ -154,5 +154,8 @@ class UserController:
 
         user_id = dao.login(username, password)
 
-        return jsonify(user_id)
+        if not user_id:
+            return jsonify("Not Found"), 404
+
+        return self.getUserById(user_id)
 

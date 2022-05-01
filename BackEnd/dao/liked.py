@@ -11,7 +11,7 @@ class LikedDao:
         self.conn = psycopg2.connect(connection_url)
 
     def getLikes(self, user_id):
-        query = 'SELECT liked_item_id, product, "user" FROM liked_items WHERE "user" = %s;'
+        query = 'SELECT liked_item_id, product, "user", p.name, p.description, p.price FROM liked_items INNER JOIN products p on p.product_id = liked_items.product WHERE "user" = %s;'
         cursor = self.conn.cursor()
         cursor.execute(query, (user_id,))
         result = []
@@ -21,7 +21,7 @@ class LikedDao:
         return result
 
     def getAllLikes(self):
-        query = 'SELECT liked_item_id, product, "user" FROM liked_items;'
+        query = 'SELECT liked_item_id, product, "user", p.name, p.description, p.price FROM liked_items INNER JOIN products p on p.product_id = liked_items.product;'
         cursor = self.conn.cursor()
         cursor.execute(query)
         result = []

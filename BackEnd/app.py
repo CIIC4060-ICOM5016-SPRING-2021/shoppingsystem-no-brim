@@ -5,8 +5,10 @@ from controller.order import OrderController
 from controller.cart import CartController
 from controller.liked import LikedController
 from controller.user import UserController
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route('/')
@@ -220,7 +222,7 @@ def buy_cart(user_id):
         return OrderController().createOrder(user_id)
 
 
-@app.route('/NO-BRIM/Users/users/login')
+@app.route('/NO-BRIM/Users/users/login', methods=['GET', 'POST'])
 def login():
     return UserController().login(request.json)
 

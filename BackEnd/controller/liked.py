@@ -3,7 +3,7 @@ from dao.liked import LikedDao
 
 class LikedController:
     def build_dict(self, row):
-        result = {'liked_item_id': row[0], 'product_id': row[1], 'user_id': row[2]}
+        result = {'liked_item_id': row[0], 'product_id': row[1], 'user_id': row[2], 'products_name': row[3], 'products_description': row[4], 'products_price': row[5]}
         return result
 
     def getLikes(self, user_id):

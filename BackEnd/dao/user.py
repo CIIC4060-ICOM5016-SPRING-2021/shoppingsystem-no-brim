@@ -99,7 +99,10 @@ class UserDAO:
         query = 'SELECT user_id FROM "user" WHERE username = %s AND password = %s;'
         cursor = self.conn.cursor()
         cursor.execute(query, (username, password))
-        result = cursor.fetchone()[0]
+        try:
+            result = cursor.fetchone()[0]
+        except:
+            return
         return result
 
 

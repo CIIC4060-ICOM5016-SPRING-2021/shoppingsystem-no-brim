@@ -1,14 +1,32 @@
 import React, {Component, useState} from 'react';
 import {Button, Divider, Form, Grid, Header, Modal, Segment, Tab} from 'semantic-ui-react';
+import axios from "axios";
 
 
 
 function HomePage() {
     const [open, setOpen] = useState(false);
     console.log(open);
-    const handleChange = (event, newValue) => {
-        setOpen(true);
+    const [inputs, setInputs] = useState({});
+
+    const handleChange = (event) => {
+        const name = event.target.name;
+        const value = event.target.value;
+        setInputs(values => ({...values, [name]: value}))
+
     }
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        // console.log(inputs);
+        axios.post('http://127.0.0.1:5000//NO-BRIM/Users/users/login', inputs)
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+                localStorage.setItem("user_id",JSON.stringify(res.data))
+            })
+    }
+
 
     return (<Segment><Header dividing textAlign="center" size="huge">Welcome to DB Demo</Header>
             <Modal
@@ -36,15 +54,21 @@ function HomePage() {
                                 icon='user'
                                 iconPosition='left'
                                 label='Username'
-                                placeholder='Username'
+                                type="text"
+                                name="username"
+                                value={inputs.username || ""}
+                                onChange={handleChange}
                             />
                             <Form.Input
                                 icon='lock'
                                 iconPosition='left'
                                 label='Password'
-                                type='password'
+                                type="password"
+                                name="password"
+                                value={inputs.password || ""}
+                                onChange={handleChange}
                             />
-                            <Button content='Login' primary onClick={handleChange}/>
+                            <Button content='Login' primary onClick={handleSubmit}/>
                         </Form>
                     </Grid.Column>
                     <Grid.Column verticalAlign='middle'>

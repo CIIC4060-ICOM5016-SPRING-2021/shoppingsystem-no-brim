@@ -23,7 +23,10 @@ function HomePage() {
             .then(res => {
                 console.log(res);
                 console.log(res.data);
-                localStorage.setItem("user_id",JSON.stringify(res.data))
+                localStorage.setItem("user_id",JSON.stringify(res.data.user_id));
+                localStorage.setItem("isAdmin",JSON.stringify(res.data.is_admin));
+                localStorage.setItem("username",JSON.stringify(res.data.username));
+
             })
     }
 

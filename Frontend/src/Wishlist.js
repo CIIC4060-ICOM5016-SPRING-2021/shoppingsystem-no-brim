@@ -20,7 +20,7 @@ function WishList() {
 
     return data.map(value => {return <Card>
         <Card.Content>
-            <Card.Header>{value.product_name}</Card.Header>
+            <Card.Header>{value.products_name}</Card.Header>
             <Card.Meta>{value.products_price}</Card.Meta>
             <Card.Description>
                 {value.products_description}

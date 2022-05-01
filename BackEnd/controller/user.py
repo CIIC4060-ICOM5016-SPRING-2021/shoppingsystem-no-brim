@@ -146,3 +146,13 @@ class UserController:
         result = dao.checkAdmin(user_id)
 
         return result
+
+    def login(self, json):
+        dao = UserDAO()
+        username = json['username']
+        password = json['password']
+
+        user_id = dao.login(username, password)
+
+        return jsonify(user_id)
+

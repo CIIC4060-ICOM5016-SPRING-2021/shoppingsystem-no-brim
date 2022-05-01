@@ -95,3 +95,11 @@ class UserDAO:
         result = cursor.fetchone()[0]
         return result
 
+    def login(self, username, password):
+        query = 'SELECT user_id FROM "user" WHERE username = %s AND password = %s;'
+        cursor = self.conn.cursor()
+        cursor.execute(query, (username, password))
+        result = cursor.fetchone()[0]
+        return result
+
+

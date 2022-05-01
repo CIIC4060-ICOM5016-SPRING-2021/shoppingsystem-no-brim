@@ -220,5 +220,10 @@ def buy_cart(user_id):
         return OrderController().createOrder(user_id)
 
 
+@app.route('/NO-BRIM/Users/users/login')
+def login():
+    return UserController().login(request.json)
+
+
 if __name__ == '__main__':
     app.run(debug=1)

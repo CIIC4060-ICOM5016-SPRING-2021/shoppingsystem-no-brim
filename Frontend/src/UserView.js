@@ -3,6 +3,8 @@ import {Button, Card, Container, Divider, Header, Modal, Tab} from "semantic-ui-
 import Dashboard from "./Dashboard";
 import Products from "./Products";
 import Wishlist from "./Wishlist";
+import Profile from "./Profile";
+import UserStatistics from "./UserStatistics";
 
 
 function UserView(){
@@ -19,7 +21,7 @@ function UserView(){
             menuItem: 'Cart', render: () => <Tab.Pane active={isAuth}><Products/></Tab.Pane>
         },
         {
-            menuItem: 'Profile', render: () => <Tab.Pane active={isAuth}>:)</Tab.Pane>
+            menuItem: 'Profile', render: () => <Tab.Pane active={isAuth}><Profile/><UserStatistics/></Tab.Pane>
         },
         {
             menuItem: 'Dashboard', render: () => <Tab.Pane active={isAuth}><Dashboard/></Tab.Pane>

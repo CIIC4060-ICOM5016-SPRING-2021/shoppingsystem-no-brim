@@ -6,6 +6,8 @@ import axios from "axios";
 
 function UserStatistics(){
     const [topCat, setTopCat] = useState("")
+
+
     const [topProd, setTopProd] = useState("")
     const [exProd, setExProd] = useState("")
     const [cheapProd, setCheapProd] = useState("")
@@ -14,12 +16,13 @@ function UserStatistics(){
         axios.get("https://db-class-22.herokuapp.com//NO-BRIM/User/rank-most-bought-category/"+ localStorage.getItem("user_id"))
             .then((response)=>{
                 console.log(response.data)
-                setTopCat(response.data[0].name) ;
+                setTopCat(response.data[0].name +" " + response.data[0].amount) ;
+
             })
         axios.get("https://db-class-22.herokuapp.com//NO-BRIM/User/rank-most-bought-product/"+ localStorage.getItem("user_id"))
             .then((response)=>{
                 console.log(response.data)
-                setTopProd(response.data[0].name) ;
+                setTopProd(response.data[0].name +" " + response.data[0].amount) ;
             })
         axios.get("https://db-class-22.herokuapp.com//NO-BRIM/User/most-expensive-product-bought/"+ localStorage.getItem("user_id"))
             .then((response)=>{
@@ -43,6 +46,7 @@ function UserStatistics(){
             <b>Cheapest Product: </b> {cheapProd} <br/>
         <Card>
             <b>Most Bought Category: </b>  {topCat}<br/>
+
         </Card>
         <Card>
             <b>Most Bought Product: </b> {topProd} <br/>

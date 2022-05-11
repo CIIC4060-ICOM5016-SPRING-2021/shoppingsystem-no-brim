@@ -14,7 +14,7 @@ function UserStatistics(){
         axios.get("https://db-class-22.herokuapp.com//NO-BRIM/User/rank-most-bought-category/"+ localStorage.getItem("user_id"))
             .then((response)=>{
                 console.log(response.data)
-                setTopCat(response.data.name) ;
+                setTopCat(response.data[0].name) ;
             })
         axios.get("https://db-class-22.herokuapp.com//NO-BRIM/User/rank-most-bought-product/"+ localStorage.getItem("user_id"))
             .then((response)=>{
@@ -38,10 +38,15 @@ function UserStatistics(){
     return <Segment>
 
 
-            <b>Most Bought Category: </b> {topCat}<br/>
-            <b>Most Bought Product: </b> {topProd} <br/>
+
             <b>Most Expensive Product: </b> {exProd} <br/>
             <b>Cheapest Product: </b> {cheapProd} <br/>
+        <Card>
+            <b>Most Bought Category: </b>  <br/>
+        </Card>
+        <Card>
+            <b>Most Bought Product: </b> {topProd} <br/>
+        </Card>
 
     </Segment>
 }

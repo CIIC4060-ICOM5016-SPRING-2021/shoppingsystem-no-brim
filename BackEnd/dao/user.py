@@ -59,7 +59,7 @@ class UserDAO:
 
     # Need further testing
     def getRankMostBoughtCategory(self, user_id):
-        query = 'SELECT pc.category_id, pc.name, pc.description FROM ordered_items as oi INNER JOIN products p on oi.product = p.product_id INNER JOIN product_categories pc on p.category = pc.category_id INNER JOIN orders o on oi."order" = o.order_id INNER JOIN "user" u on o."user" = u.user_id WHERE u.user_id = %s GROUP BY pc.category_id ORDER BY SUM(oi.quantity) DESC;'
+        query = 'SELECT pc.category_id, pc.name, pc.description, SUM(oi.quantity) FROM ordered_items as oi INNER JOIN products p on oi.product = p.product_id INNER JOIN product_categories pc on p.category = pc.category_id INNER JOIN orders o on oi."order" = o.order_id INNER JOIN "user" u on o."user" = u.user_id WHERE u.user_id = %s GROUP BY pc.category_id ORDER BY SUM(oi.quantity) DESC;'
         cursor = self.conn.cursor()
         cursor.execute(query, (user_id, ))
         result = []
@@ -68,7 +68,7 @@ class UserDAO:
         return result
 
     def getRankMostBoughtProdcut(self, user_id):
-        query = 'SELECT products.product_id, products.name, products.description, products.price as price, products.inventory, product_categories.name FROM products INNER JOIN product_categories ON products.category = product_categories.category_id INNER JOIN ordered_items on products.product_id = ordered_items.product INNER JOIN orders o on ordered_items.order = o.order_id INNER JOIN "user" u on o.user = u.user_id WHERE u.user_id = %s AND products.isactive = true ORDER BY price ASC;'
+        query = 'SELECT p.product_id, p.name, p.description, p.price as price, p.inventory, p.name, SUM(oi.quantity) AS ammount FROM ordered_items as oi INNER JOIN products p on oi.product = p.product_id INNER JOIN product_categories pc on p.category = pc.category_id INNER JOIN orders o on oi."order" = o.order_id INNER JOIN "user" u on o."user" = u.user_id WHERE u.user_id = %s GROUP BY p.product_id ORDER BY SUM(oi.quantity) DESC;'
         cursor = self.conn.cursor()
         cursor.execute(query, (user_id, ))
         result = []

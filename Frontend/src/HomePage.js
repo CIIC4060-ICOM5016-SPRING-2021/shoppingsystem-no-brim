@@ -1,6 +1,7 @@
 import React, {Component, useState} from 'react';
 import {Button, Divider, Form, Grid, Header, Modal, Segment, Tab} from 'semantic-ui-react';
 import axios from "axios";
+import SignUpForm from "./SignUpForm";
 
 
 
@@ -8,6 +9,8 @@ function HomePage() {
     const [open, setOpen] = useState(false);
     console.log(open);
     const [inputs, setInputs] = useState({});
+    const [signupInputs, setSignupInputs] = useState({});
+
 
     const handleChange = (event) => {
         const name = event.target.name;
@@ -15,6 +18,10 @@ function HomePage() {
         setInputs(values => ({...values, [name]: value}))
 
     }
+    if(!localStorage.getItem("isLogged")){
+        localStorage.setItem("isLogged",JSON.stringify(false));
+    }
+
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -26,8 +33,24 @@ function HomePage() {
                 localStorage.setItem("user_id",JSON.stringify(res.data.user_id));
                 localStorage.setItem("isAdmin",JSON.stringify(res.data.is_admin));
                 localStorage.setItem("username",JSON.stringify(res.data.username));
+                localStorage.setItem("first_name",JSON.stringify(res.data.first_name));
+                localStorage.setItem("last_name",JSON.stringify(res.data.last_name));
+                localStorage.setItem("email",JSON.stringify(res.data.email));
+                localStorage.setItem("phone",JSON.stringify(res.data.phone));
+                localStorage.setItem("isLogged",JSON.stringify(true));
 
             })
+    }
+
+    const handleLogin = () => {
+        localStorage.setItem("isLogged",JSON.stringify(false))
+        localStorage.setItem("user_id",JSON.stringify(null));
+        localStorage.setItem("isAdmin",JSON.stringify(null));
+        localStorage.setItem("username",JSON.stringify(null));
+        localStorage.setItem("first_name",JSON.stringify(null));
+        localStorage.setItem("last_name",JSON.stringify(null));
+        localStorage.setItem("email",JSON.stringify(null));
+        localStorage.setItem("phone",JSON.stringify(null));
     }
 
 
@@ -38,15 +61,17 @@ function HomePage() {
                 onClose={() => setOpen(false)}
                 onOpen={() => setOpen(true)}
             >
-                <Modal.Header>Needs changing!</Modal.Header>
+                <Modal.Header>Signup!</Modal.Header>
                 <Modal.Content>
                     <Modal.Description>
                         This is a modal but it serves to show how buttons and functions can be implemented.
                     </Modal.Description>
+                    <SignUpForm/>
+                    {/*    <Button onClick={() => setOpen(false)}>OK</Button>*/}
                 </Modal.Content>
-                <Modal.Actions>
-                    <Button onClick={() => setOpen(false)}>OK</Button>
-                </Modal.Actions>
+                {/*<Modal.Actions>*/}
+
+                {/*</Modal.Actions>*/}
             </Modal>
             <Segment placeholder>
 
@@ -75,10 +100,10 @@ function HomePage() {
                         </Form>
                     </Grid.Column>
                     <Grid.Column verticalAlign='middle'>
-                        <Button content='Sign up' icon='signup' size='big' onClick={handleChange}/>
+                        <Button content='Sign up' icon='signup' size='big' onClick={() => setOpen(true)}/>
                     </Grid.Column>
                 </Grid>
-
+                <Button content='Log Out' icon='signup' size='big' onClick={() => handleLogin()}/>
                 <Divider vertical>Or</Divider>
             </Segment>
         </Segment>

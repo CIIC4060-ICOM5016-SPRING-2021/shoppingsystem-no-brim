@@ -1,6 +1,5 @@
-import React, {Component, useEffect, useState} from 'react';
-import {Button, Card, Container, Modal, Tab} from "semantic-ui-react";
-import AllProducts from "./AllProducts";
+import React, {useEffect, useState} from 'react';
+import {Button, Card} from "semantic-ui-react";
 import axios from "axios";
 
 function WishList() {
@@ -8,6 +7,21 @@ function WishList() {
 
     const getWishlist = () => {
         axios.get("https://db-class-22.herokuapp.com/NO-BRIM/Liked/liked_items/"+ localStorage.getItem("user_id"))
+            .then((response)=>{
+                setData(response.data)
+            })
+    }
+
+    // Need to work on this method because this method uses a json response to identify which item to add to cart
+    const addToCart = () => {
+        axios.post("https://db-class-22.herokuapp.com//NO-BRIM/Cart/cart/add/")
+            .then((response)=>{
+                setData(response.data)
+            })
+    }
+
+    const removeFromWishlist = (liked_item_id) => {
+        axios.delete("https://db-class-22.herokuapp.com/NO-BRIM/Liked/liked_items/delete/"+ liked_item_id)
             .then((response)=>{
                 setData(response.data)
             })
@@ -28,7 +42,10 @@ function WishList() {
         </Card.Content>
         <Card.Content extra>
             <div className='ui two buttons'>
-                <Button basic color='green'>
+                <Button basic color='green' onClick={() => addToCart(value)}> // Must fix
+                    Add to cart
+                </Button>
+                <Button basic color='red' onClick={() => removeFromWishlist(value.liked_item_id)}> // Figure out how to redirect
                     Remove
                 </Button>
             </div>

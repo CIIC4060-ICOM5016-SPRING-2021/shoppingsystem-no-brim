@@ -5,7 +5,7 @@ import axios from "axios";
 
 
 function UserStatistics(){
-    const [topCat, setTopCat] = useState("")
+    const [topCat, setTopCat] = useState([])
 
 
     const [topProd, setTopProd] = useState("")
@@ -16,7 +16,15 @@ function UserStatistics(){
         axios.get("https://db-class-22.herokuapp.com//NO-BRIM/User/rank-most-bought-category/"+ localStorage.getItem("user_id"))
             .then((response)=>{
                 console.log(response.data)
-                setTopCat(response.data[0].name +" " + response.data[0].amount) ;
+                // setTopCat(response.data[0].name +" " + response.data[0].amount) ;
+                const arr = []
+                for (const element of response.data){
+                    console.log(element)
+                    arr.push({"name": element.name, "amount": element.amount})
+
+                }
+                setTopCat(arr)
+                console.log(topCat)
 
             })
         axios.get("https://db-class-22.herokuapp.com//NO-BRIM/User/rank-most-bought-product/"+ localStorage.getItem("user_id"))
@@ -45,7 +53,7 @@ function UserStatistics(){
             <b>Most Expensive Product: </b> {exProd} <br/>
             <b>Cheapest Product: </b> {cheapProd} <br/>
         <Card>
-            <b>Most Bought Category: </b>  {topCat}<br/>
+            {/*<b>Most Bought Category: </b>  {topCat}<br/>*/}
 
         </Card>
         <Card>

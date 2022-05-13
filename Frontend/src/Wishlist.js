@@ -12,14 +12,17 @@ function WishList() {
             })
     }
 
-    // Need to work on this method because this method uses a json response to identify which item to add to cart
-    const addToCart = () => {
-        axios.post("https://db-class-22.herokuapp.com//NO-BRIM/Cart/cart/add/")
-            .then((response)=>{
-                setData(response.data)
+    // Need to test
+    const addToCart = (value) => {
+        let itemToAdd = {"Product":value.product_id, "User": localStorage.getItem("user_id"), "Quantity":1}
+        axios.post("https://db-class-22.herokuapp.com//NO-BRIM/Cart/cart/add/", itemToAdd)
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
             })
     }
 
+    // Need to test
     const removeFromWishlist = (liked_item_id) => {
         axios.delete("https://db-class-22.herokuapp.com/NO-BRIM/Liked/liked_items/delete/"+ liked_item_id)
             .then((response)=>{
@@ -42,10 +45,10 @@ function WishList() {
         </Card.Content>
         <Card.Content extra>
             <div className='ui two buttons'>
-                <Button basic color='green' onClick={() => addToCart(value)}> // Must fix
+                <Button basic color='green' onClick={() => addToCart(value)}>
                     Add to cart
                 </Button>
-                <Button basic color='red' onClick={() => removeFromWishlist(value.liked_item_id)}> // Figure out how to redirect
+                <Button basic color='red' onClick={() => removeFromWishlist(value.liked_item_id)}>
                     Remove
                 </Button>
             </div>

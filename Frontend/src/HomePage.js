@@ -1,7 +1,6 @@
-import React, {Component, useState} from 'react';
-import {Button, Divider, Form, Grid, Header, Modal, Segment, Tab} from 'semantic-ui-react';
+import React, {useState} from 'react';
+import {Button, Divider, Form, Grid, Header, Segment} from 'semantic-ui-react';
 import axios from "axios";
-import SignUpForm from "./SignUpForm";
 
 
 
@@ -54,36 +53,26 @@ function HomePage() {
     }
 
 
-    return (<Segment><Header dividing textAlign="center" size="huge">Welcome to DB Demo</Header>
-            <Modal
-                centered={false}
-                open={open}
-                onClose={() => setOpen(false)}
-                onOpen={() => setOpen(true)}
-            >
-                <Modal.Header>Signup!</Modal.Header>
-                <Modal.Content>
-                    <Modal.Description>
-                        This is a modal but it serves to show how buttons and functions can be implemented.
-                    </Modal.Description>
-                    <SignUpForm/>
-                    {/*    <Button onClick={() => setOpen(false)}>OK</Button>*/}
-                </Modal.Content>
-                {/*<Modal.Actions>*/}
+    return (
+        <Segment  style={{ backgroundColor: '#F0F0F0' }}>
+            {/*<h1 textAlign="center" style={{ fontSize: '325%',textAlign: 'center', paddingTop: '10%'}}>Welcome to No-Brim hat shop!</h1>*/}
 
-                {/*</Modal.Actions>*/}
-            </Modal>
-            <Segment placeholder>
-
-                <Grid columns={2} relaxed='very' stackable>
-                    <Grid.Column>
-                        <Form>
+            <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
+                <Grid.Column style={{ maxWidth: 450 }}>
+                    <Header textAlign="center" style={{ fontSize: '325%',textAlign: 'center', paddingTop: '10%'}} >
+                        Welcome to No-Brim hat shop!
+                    </Header>
+                    <Form size={'large'} style={{ marginTop: '15%' }}>
+                        <Segment textAlign='left'>
+                            <h1 style={{textAlign: "center"}}>Log In!</h1>
+                            <Divider/>
                             <Form.Input
                                 icon='user'
                                 iconPosition='left'
                                 label='Username'
                                 type="text"
                                 name="username"
+                                placeholder='Username'
                                 value={inputs.username || ""}
                                 onChange={handleChange}
                             />
@@ -93,19 +82,28 @@ function HomePage() {
                                 label='Password'
                                 type="password"
                                 name="password"
+                                placeholder='Password'
                                 value={inputs.password || ""}
                                 onChange={handleChange}
                             />
-                            <Button content='Login' primary onClick={handleSubmit}/>
-                        </Form>
-                    </Grid.Column>
-                    <Grid.Column verticalAlign='middle'>
+                            <Button fluid content='Login' primary onClick={handleSubmit}/>
+                        </Segment>
+                    </Form>
+                    <Segment>
+                        <h4>New user?</h4>
                         <Button content='Sign up' icon='signup' size='big' onClick={() => setOpen(true)}/>
-                    </Grid.Column>
-                </Grid>
-                <Button content='Log Out' icon='signup' size='big' onClick={() => handleLogin()}/>
-                <Divider vertical>Or</Divider>
-            </Segment>
+                    </Segment>
+                </Grid.Column>
+            </Grid>
+
+
+                    {/*<Grid.Column verticalAlign='middle'>*/}
+                    {/*    <Button content='Sign up' icon='signup' size='big' onClick={() => setOpen(true)}/>*/}
+                    {/*    <Button content='Log Out' icon='signup' size='big' onClick={() => handleLogin()}/>*/}
+                    {/*</Grid.Column>*/}
+
+                {/*<Divider vertical>Or</Divider>*/}
+
         </Segment>
     )
 }

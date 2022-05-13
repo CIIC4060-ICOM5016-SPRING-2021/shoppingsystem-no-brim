@@ -14,7 +14,7 @@ function WishList() {
     }
 
     useEffect(getWishlist,[])
-
+    
     if (!data) return null;
 
 
@@ -33,7 +33,10 @@ function WishList() {
                 </Button>
             </div>
         </Card.Content>
-    </Card>});
+    </Card>
+    });
+
+   
 }
 
 export default WishList;

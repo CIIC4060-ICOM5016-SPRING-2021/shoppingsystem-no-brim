@@ -6,6 +6,7 @@ import Wishlist from "./Wishlist";
 import Cart from "./Cart";
 
 
+
 function UserView(){
     const [isAuth, setIsAuth] = useState(true)
     const [notShow, setNotShow] = useState(false)
@@ -17,7 +18,7 @@ function UserView(){
             menuItem: 'WishList', render: () => <Tab.Pane active={isAuth}><Wishlist/></Tab.Pane>
         },
         {
-            menuItem: 'Cart', render: () => <Tab.Pane active={isAuth}><Cart/></Tab.Pane>
+            menuItem: 'Cart',render: () => <Tab.Pane active={isAuth}><Cart/></Tab.Pane>
         },
         {
             menuItem: 'Profile', render: () => <Tab.Pane active={isAuth}>:)</Tab.Pane>

@@ -8,6 +8,11 @@ class ProductCategoryController:
 
         return result
 
+    def build_dict_amount(self, row):
+        result = {'category_id': row[0], 'name': row[1], 'description': row[2], 'amount': row[3]}
+
+        return result
+
     def getAllCategories(self):
         dao = ProductCategoryDAO()
         result_t = dao.getAllCategories()
@@ -27,7 +32,7 @@ class ProductCategoryController:
 
         result = []
         for r in result_t:
-            d = self.build_dict(r)
+            d = self.build_dict_amount(r)
             result.append(d)
 
         return jsonify(d)

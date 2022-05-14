@@ -54,6 +54,13 @@ class OrderDao:
         price = cursor.fetchone()[0]
         return price
 
+    def getInventory(self, product_id):
+        query1 = "SELECT inventory FROM products WHERE product_id = %s"
+        cursor = self.conn.cursor()
+        cursor.execute(query1, (product_id,))
+        result = cursor.fetchone()[0]
+        return result
+
     def newOrderItem(self, quantity, price,product_id, order_id):
         query = 'INSERT INTO ordered_items(quantity, price, "order", product) VALUES (%s, %s, %s, %s) returning ordered_item_id'
         cursor = self.conn.cursor()
@@ -61,4 +68,15 @@ class OrderDao:
         self.conn.commit()
         order_item_id = cursor.fetchone()[0]
         return order_item_id
+
+    def deleteOrder(self, order_id):
+        query = "DELETE FROM orders WHERE order_id = %s returning order_id;"
+        cursor = self.conn.cursor()
+        cursor.execute(query, (order_id,))
+        try:
+            result = cursor.fetchone()[0]
+        except:
+            return
+        self.conn.commit()
+        return result
 

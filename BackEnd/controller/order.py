@@ -1,6 +1,7 @@
 from flask import jsonify
 from dao.order import OrderDao
 from dao.cart import CartDao
+from dao.product import ProductDAO
 
 
 class OrderController:
@@ -50,15 +51,25 @@ class OrderController:
     def createOrder(self, user_id):
         dao = OrderDao()
         c_dao = CartDao()
+        p_dao = ProductDAO()
 
         cart_items = c_dao.getCart(user_id)
         c_dao.clearCartItems(user_id)
 
         order_id = dao.newOrder(user_id)
+        count = 0
 
         for item in cart_items:
-            price = dao.getPrice(item[2])
-            dao.newOrderItem(item[1], price, item[2], order_id)
+            inventory = dao.getInventory(item[2])
+            if inventory >= item[1]:
+                price = dao.getPrice(item[2])
+                dao.newOrderItem(item[1], price, item[2], order_id)
+                count += 1
+                p_dao.updateProduct(item[2], price, inventory-item[1])
+
+        if count == 0:
+            dao.deleteOrder(order_id)
+            return jsonify("Not Valid Order"), 404
 
         result = self.getOrderById(order_id)
 

@@ -1,8 +1,7 @@
 import React, {Component, useEffect, useState} from 'react';
-import {Card} from "semantic-ui-react";
+import {Card, Grid, Segment} from "semantic-ui-react";
 import axios from "axios";
 import { Button,Icon,Confirm} from 'semantic-ui-react';
-import {Link} from 'react-router-dom' 
 
 function Cart() {
 
@@ -49,16 +48,27 @@ function Cart() {
     }
 
 
-
     useEffect(getCart,[])  //Posible URL in empty brackets
 
 
     if (!data) return null;
-    
+
+    let username = localStorage.getItem("username");
+    username = username.replace(/"/g, '');
+
+    let user_cart = null
+    user_cart = getCart(localStorage.getItem("user_id"))
+    let cart_subtotal = 0
+    // if (user_cart){
+    //     for (const item of user_cart){
+    //         cart_subtotal += item.products_price;
+    //     }
+    // }
+
     
     cartItems= 
         data.map( value =>
-             <Card>
+            <Card>
                 <Card.Content>
                     <Card.Header>{value.products_name}</Card.Header>
                     <Card.Meta>{value.products_price}</Card.Meta>
@@ -74,25 +84,33 @@ function Cart() {
                 </Card.Content>
             </Card>)
 
+    console.log(user_cart.data);
 
 
-        return(<>
-            <div>
-                <Button style={{width: "10%"}} floated='right' animated="vertical" size='massive' basic color='red' 
-                onClick={()=> clearCart()}>
-                    <Button.Content hidden>Clear Cart</Button.Content>
-                    <Button.Content visible>
-                    <Icon name='remove circle'/>
-                    </Button.Content>
-                </Button>
-            </div>
-
-            <div>
-                {cartItems}
-            </div>
-        </>);
-
-
+        return(
+            <Grid centered>
+                <Grid.Row columns={2}>
+                    <Grid.Column width={12}>
+                        <h1 style={{marginTop: "1%", marginBottom: '2%', textAlign: 'center'}}>Items in {username}'s cart:</h1>
+                        <Card.Group centered>
+                            {cartItems}
+                        </Card.Group>
+                    </Grid.Column>
+                    <Grid.Column width={4}>
+                        <Segment>
+                            <h2>Subtotal: </h2>
+                            <Button style={{width: "100%"}} animated="vertical" size='massive' basic color='red'
+                                    onClick={()=> clearCart()}>
+                                <Button.Content hidden>Clear Cart</Button.Content>
+                                <Button.Content visible>
+                                    <Icon name='remove circle'/>
+                                </Button.Content>
+                            </Button>
+                        </Segment>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        );
 }
 
 

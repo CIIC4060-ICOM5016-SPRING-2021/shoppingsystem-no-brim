@@ -12,10 +12,12 @@ import UserUpdateForm from "./UserUpdateForm";
 function UserView(){
     const [isAuth, setIsAuth] = useState(true)
     const [notShow, setNotShow] = useState(false)
+    let username = localStorage.getItem("username");
+    username = username.replace(/"/g, '');
     const panes = [
         {
 
-            menuItem: 'Products', render: () => <Tab.Pane active={isAuth}><Container><Header as='h1' textAlign={'center'}>Welcome to No-Brim hat shop!</Header><Divider/></Container><Products/></Tab.Pane>
+            menuItem: 'Products', render: () => <Tab.Pane active={isAuth}><Container><Header as='h1' textAlign={'center'}>Welcome to No-Brim hat shop, {username}!</Header><Divider/></Container><Products/></Tab.Pane>
         },
         {
             menuItem: 'WishList', render: () => <Tab.Pane active={isAuth}><Wishlist/></Tab.Pane>

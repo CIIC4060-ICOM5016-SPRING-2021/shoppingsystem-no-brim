@@ -55,6 +55,17 @@ function Cart() {
 
     }
 
+    // Need to finish this (update buttons - onClick())
+    function updateQuantity(value){
+        if (value <= 0){
+            // remove del cart
+        }
+        else{
+            // value >= 1
+            // let me increment and decrement quantity
+        }
+    }
+
 
     useEffect(getCart,[])  //Possible URL in empty brackets
 

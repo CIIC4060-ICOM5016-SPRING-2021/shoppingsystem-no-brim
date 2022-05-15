@@ -37,6 +37,15 @@ class CartController:
         json['Id'] = id
         return jsonify(json), 201
 
+    def updateCart(self, quantity, json):
+        quantity = json['Quantity']
+        dao = CartDao()
+        updated = dao.updateCartItem(self, quantity, product_id, user_id)
+        if updated:
+            return jsonify(json), 200
+        else:
+            return jsonify("Not Found"), 404
+
     def removeCartItem(self, cart_item_id):
         dao = CartDao()
         result = dao.deleteCartItem(cart_item_id)

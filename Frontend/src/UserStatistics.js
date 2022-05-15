@@ -6,59 +6,84 @@ import axios from "axios";
 
 function UserStatistics(){
     const [topCat, setTopCat] = useState([])
+    const [topProd, setTopProd] = useState([])
+    const [exProd, setExProd] = useState([])
+    const [cheapProd, setCheapProd] = useState([])
 
-
-    const [topProd, setTopProd] = useState("")
-    const [exProd, setExProd] = useState("")
-    const [cheapProd, setCheapProd] = useState("")
     if (localStorage.getItem("user_id")){
 
         axios.get("https://db-class-22.herokuapp.com//NO-BRIM/User/rank-most-bought-category/"+ localStorage.getItem("user_id"))
             .then((response)=>{
-                console.log(response.data)
-                // setTopCat(response.data[0].name +" " + response.data[0].amount) ;
-                const arr = []
-                for (const element of response.data){
-                    console.log(element)
-                    arr.push({"name": element.name, "amount": element.amount})
 
-                }
-                setTopCat(arr)
-                console.log(topCat)
+                setTopCat(response.data) ;
 
             })
         axios.get("https://db-class-22.herokuapp.com//NO-BRIM/User/rank-most-bought-product/"+ localStorage.getItem("user_id"))
             .then((response)=>{
-                console.log(response.data)
-                setTopProd(response.data[0].name +" " + response.data[0].amount) ;
+
+                setTopProd(response.data) ;
             })
         axios.get("https://db-class-22.herokuapp.com//NO-BRIM/User/most-expensive-product-bought/"+ localStorage.getItem("user_id"))
             .then((response)=>{
-                console.log(response.data)
-                setExProd(response.data.name) ;
+
+                setExProd([response.data]) ;
             })
         axios.get("https://db-class-22.herokuapp.com//NO-BRIM/User/cheapest-product-bought/"+ localStorage.getItem("user_id"))
             .then((response)=>{
-                console.log(response.data)
-                setCheapProd(response.data.name) ;
+
+                setCheapProd([response.data]) ;
             })
 
-
-
     }
+
+    let mostBoughtCategory= topCat.map( value =>
+            <Card>
+                <Card.Content>
+                    Name: {value.name} - Amount: {value.amount}
+
+                </Card.Content>
+                <Card.Content extra>
+                </Card.Content>
+            </Card>)
+
+    let mostBoughtProducts= topProd.map( value =>
+        <Card>
+            <Card.Content>
+                Name: {value.name} - Amount: {value.amount}
+
+            </Card.Content>
+            <Card.Content extra>
+            </Card.Content>
+        </Card>)
+
+
+    let ExpensiveProduct= exProd.map( value =>
+        <Card>
+            <Card.Content>
+                Name: {value.name} - Price: {value.price}
+
+            </Card.Content>
+            <Card.Content extra>
+            </Card.Content>
+        </Card>)
+
+    let CheapestProduct= cheapProd.map( value =>
+        <Card>
+            <Card.Content>
+                Name: {value.name} - Price: {value.price}
+
+            </Card.Content>
+            <Card.Content extra>
+            </Card.Content>
+        </Card>)
+
     return <Segment>
 
+            <b>Most Expensive Product: </b> {ExpensiveProduct} <br/>
+            <b>Cheapest Product: </b> {CheapestProduct} <br/>
+            <b>Most Bought Category: </b> {mostBoughtCategory}  <br/>
+            <b>Most Bought Product: </b> {mostBoughtProducts} <br/>
 
-
-            <b>Most Expensive Product: </b> {exProd} <br/>
-            <b>Cheapest Product: </b> {cheapProd} <br/>
-        <Card>
-            {/*<b>Most Bought Category: </b>  {topCat}<br/>*/}
-
-        </Card>
-        <Card>
-            <b>Most Bought Product: </b> {topProd} <br/>
-        </Card>
 
     </Segment>
 }

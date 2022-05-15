@@ -24,8 +24,12 @@ function Cart() {
     const deleteCartItem = (id) => {
         axios.delete("https://db-class-22.herokuapp.com//NO-BRIM/Cart/cart/delete/" 
         +id).then((response)=>{
-                setData(response.data)
+            axios.get("https://db-class-22.herokuapp.com//NO-BRIM/Cart/cart/" + localStorage.getItem("user_id"))
+                .then((response)=>{
+                    setData(response.data)
+                })
             })
+
     }
 
     function refreshPage() {
@@ -44,8 +48,12 @@ function Cart() {
     const clearCart = () =>{
         axios.delete("https://db-class-22.herokuapp.com//NO-BRIM/Cart/cart/clear/"+localStorage.getItem("user_id"))
         .then((response)=>{
-            setData(response.data)
+            axios.get("https://db-class-22.herokuapp.com//NO-BRIM/Cart/cart/" + localStorage.getItem("user_id"))
+                .then((response)=>{
+                    setData(response.data)
+                })
         })
+
     }
 
 
@@ -65,7 +73,7 @@ function Cart() {
                     <Card.Description>{value.quantity} in your cart</Card.Description>
                 </Card.Content>
                 <Card.Content extra>
-                    <Button fluid animated='vertical' size="big" basic color = "red" onClick={() => [deleteCartItem(value.cart_item_id),refreshPage()]}>
+                    <Button fluid animated='vertical' size="big" basic color = "red" onClick={() => deleteCartItem(value.cart_item_id)}>
                         <Button.Content hidden>Remove</Button.Content>
                         <Button.Content visible>
                         <Icon name='trash alternate'/>

@@ -26,8 +26,12 @@ function WishList() {
     const removeFromWishlist = (liked_item_id) => {
         axios.delete("https://db-class-22.herokuapp.com/NO-BRIM/Liked/liked_items/delete/"+ liked_item_id)
             .then((response)=>{
-                setData(response.data)
+                axios.get("https://db-class-22.herokuapp.com/NO-BRIM/Liked/liked_items/"+ localStorage.getItem("user_id"))
+                    .then((response)=>{
+                        setData(response.data)
+                    })
             })
+
     }
 
     useEffect(getWishlist,[])

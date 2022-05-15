@@ -9,6 +9,8 @@ function UserUpdateForm() {
         "username": localStorage.getItem("username") ,"first_name": localStorage.getItem("first_name"), "last_name": localStorage.getItem("last_name") ,
         "phone": localStorage.getItem("phone"), "password": localStorage.getItem("password")}) ;
 
+
+
     const handleChange = (event) => {
         const name = event.target.name;
         const value = event.target.value;

@@ -99,7 +99,7 @@ function Products() {
             onChange={(e,data) => changeCategory(e,data)}
 
         />
-        <Card.Group>
+        <Card.Group style={{marginTop: "0.5%", marginBottom: '1%', textAlign: 'center'}}>
 
         <AllProducts info={data}/>
     </Card.Group>

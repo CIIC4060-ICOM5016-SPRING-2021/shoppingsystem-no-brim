@@ -16,7 +16,6 @@ function UserView(){
     username = username.replace(/"/g, '');
     const panes = [
         {
-
             menuItem: 'Products', render: () => <Tab.Pane active={isAuth}><Container><Header as='h1' textAlign={'center'}>Welcome to No-Brim hat shop, {username}!</Header><Divider/></Container><Products/></Tab.Pane>
         },
         {

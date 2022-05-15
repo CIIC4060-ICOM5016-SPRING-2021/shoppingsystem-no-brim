@@ -39,6 +39,14 @@ class CartDao:
         self.conn.commit()
         return product_id
 
+#    def updateCartItem(self, quantity, product_id, user_id):
+#        query = 'UPDATE cart_items (quantity, product, "user") VALUES (%s, %s, %s) returning cart_item_id;'
+#        cursor = self.conn.cursor()
+#        cursor.execute(query, (quantity, product_id, user_id,))
+#        product_id = cursor.fetchone()[0]
+#        self.conn.commit()
+#        return product_id
+
     def deleteCartItem(self, cart_item_id):
         query = "DELETE FROM cart_items WHERE cart_item_id = %s returning cart_item_id;"
         cursor = self.conn.cursor()

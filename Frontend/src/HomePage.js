@@ -56,7 +56,7 @@ function HomePage() {
                         Type in your information to create your account with us!
                     </Modal.Description>
                     <SignUpForm/>
-                    {/*    <Button onClick={() => setOpen(false)}>OK</Button>*/}
+                        <Button onClick={() => setOpen(false)}>Cancel</Button>
                 </Modal.Content>
                 {/*<Modal.Actions>*/}
 

@@ -28,7 +28,7 @@ class ProductCategoryDAO:
         return result
 
     def getMostBoughtCategory(self):
-        query = "SELECT pc.category_id,pc.name, pc.description FROM ordered_items INNER JOIN " \
+        query = "SELECT pc.category_id,pc.name, pc.description,SUM(ordered_items.quantity) FROM ordered_items INNER JOIN " \
                 "products p on p.product_id = ordered_items.product INNER JOIN product_categories pc on p.category = " \
                 "pc.category_id GROUP BY pc.category_id,pc.name, pc.description ORDER BY SUM(ordered_items.quantity) " \
                 "DESC;"

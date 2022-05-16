@@ -12,7 +12,8 @@ class OrderDao:
         self.conn = psycopg2.connect(connection_url)
 
     def getOrderItems(self, order_id):
-        query = "SELECT ordered_item_id, product, quantity, price, ordered_items.order FROM ordered_items " \
+        query = "SELECT ordered_item_id, product, quantity, ordered_items.price, ordered_items.order, p.name " \
+                "FROM ordered_items INNER JOIN products p on p.product_id = ordered_items.product " \
                 "WHERE ordered_items.order = %s;"
         cursor = self.conn.cursor()
         cursor.execute(query, (order_id,))
@@ -39,6 +40,17 @@ class OrderDao:
         self.conn.close()
         return result
 
+    def getAllUserOrders(self, user_id):
+        query = 'SELECT order_id, "user", date_ordered, (SELECT SUM(price*ordered_items.quantity) FROM ordered_items where "order" = order_id ) AS total_cost FROM orders WHERE "user" = %s;'
+        cursor = self.conn.cursor()
+        cursor.execute(query, (user_id, ))
+        result = []
+        for r in cursor:
+            result.append(r)
+        cursor.close()
+        self.conn.close()
+        return result
+
     def newOrder(self, user_id):
         query = 'INSERT INTO orders("user",date_ordered) VALUES (%s, %s) returning order_id'
         cursor = self.conn.cursor()
@@ -54,6 +66,13 @@ class OrderDao:
         price = cursor.fetchone()[0]
         return price
 
+    def getInventory(self, product_id):
+        query1 = "SELECT inventory FROM products WHERE product_id = %s"
+        cursor = self.conn.cursor()
+        cursor.execute(query1, (product_id,))
+        result = cursor.fetchone()[0]
+        return result
+
     def newOrderItem(self, quantity, price,product_id, order_id):
         query = 'INSERT INTO ordered_items(quantity, price, "order", product) VALUES (%s, %s, %s, %s) returning ordered_item_id'
         cursor = self.conn.cursor()
@@ -61,4 +80,15 @@ class OrderDao:
         self.conn.commit()
         order_item_id = cursor.fetchone()[0]
         return order_item_id
+
+    def deleteOrder(self, order_id):
+        query = "DELETE FROM orders WHERE order_id = %s returning order_id;"
+        cursor = self.conn.cursor()
+        cursor.execute(query, (order_id,))
+        try:
+            result = cursor.fetchone()[0]
+        except:
+            return
+        self.conn.commit()
+        return result
 

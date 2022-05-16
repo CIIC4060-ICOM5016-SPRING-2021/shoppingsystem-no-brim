@@ -17,7 +17,9 @@ function Dashboard(){
     const[mboughtProduct,setmboughtProduct]=useState([{}]); 
     const[CheapestProduct,setCheapest]=useState('null');
     const[mLikedProduct,setMlikedProduct]=useState('null'); 
+    const[mExpensiveProduct,setmExpensiveProduct]=useState('null');
     let  mostBoughtItems=null;
+
 
     useEffect(() => {
             axios.get("https://db-class-22.herokuapp.com//NO-BRIM/ProductCategories/categories/bought")
@@ -26,7 +28,16 @@ function Dashboard(){
                 })
         
     },"https://db-class-22.herokuapp.com//NO-BRIM/ProductCategories/categories/bought")
-                
+        
+    
+    
+    useEffect(() => {
+        axios.get("https://db-class-22.herokuapp.com//NO-BRIM/Products/products/global/expensive")
+            .then((response)=>{
+                setmExpensiveProduct(response.data)
+            })
+    
+        },"https://db-class-22.herokuapp.com//NO-BRIM/Products/products/global/expensive")
     
     useEffect(() => {
         axios.get("https://db-class-22.herokuapp.com//NO-BRIM/Products/products/global/bought")
@@ -62,7 +73,8 @@ function Dashboard(){
              <Card>
                 <Card.Content>
                     <Card.Header>{value.name}</Card.Header>
-                    <Card.Meta>{value.category}</Card.Meta>
+                    <Card.Meta>Category: {value.category}</Card.Meta>
+                    <Card.Meta>Amount bought: {value.ammount}</Card.Meta>
                     <Card.Description>{value.description}</Card.Description>
                 </Card.Content>
                 <Card.Content extra>
@@ -70,16 +82,17 @@ function Dashboard(){
             </Card>)
 
 
-    return <Container style={{ height: 800 }}>
+    return <Container style={{}}>
     
-        <><div>
+        <> <div>
             <h1>Global Statistics</h1>
             <h2> The most bought category:</h2>
                 <div>
                     <Card>
                         <Card.Content>
                             <Card.Header>{mboughtCategory.description}</Card.Header>
-                            <Card.Meta>{mboughtCategory.name}</Card.Meta>
+                            <Card.Meta>Category: {mboughtCategory.name}</Card.Meta>
+                            <Card.Meta>Amount bought: {mboughtCategory.amount}</Card.Meta>
                         </Card.Content>
                         <Card.Content extra></Card.Content>
                     </Card>
@@ -93,7 +106,7 @@ function Dashboard(){
                         <Card>
                             <Card.Content>
                                 <Card.Header>{CheapestProduct.name}</Card.Header>
-                                <Card.Meta>{CheapestProduct.category}</Card.Meta>
+                                <Card.Meta>Category: {CheapestProduct.category}</Card.Meta>
                             </Card.Content>
                             <Card.Content extra></Card.Content>
                         </Card>
@@ -103,23 +116,23 @@ function Dashboard(){
                         <Card>
                             <Card.Content>
                                 <Card.Header>{mLikedProduct.name}</Card.Header>
-                                <Card.Meta>{mLikedProduct.category}</Card.Meta>
+                                <Card.Meta>Category: {mLikedProduct.category}</Card.Meta>
+                                <Card.Meta>Amount bought: {mLikedProduct.ammount}</Card.Meta>
                             </Card.Content>
                             <Card.Content extra></Card.Content>
                         </Card>
                     </div>
-        </div>
-        
-
-
-        <BarChart width={730} height={250} data={data}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="Counts" fill="#8884d8" />
-            </BarChart></> 
+                <h2> Most expensive product:</h2>
+                    <div>
+                        <Card>
+                            <Card.Content>
+                                <Card.Header>{mExpensiveProduct.name}</Card.Header>
+                                <Card.Meta>Category: {mExpensiveProduct.category}</Card.Meta>
+                            </Card.Content>
+                            <Card.Content extra></Card.Content>
+                        </Card>
+                    </div>
+        </div></> 
     </Container>
 
 

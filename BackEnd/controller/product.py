@@ -10,6 +10,11 @@ class ProductController:
                   'inventory': row[4], 'category': row[5]}
         return result
 
+    def build_dict_ammount(self,row):
+        result = {'product_id': row[0], 'name': row[1], 'description': row[2], 'price': row[3],
+                  'inventory': row[4], 'category': row[5], 'ammount': row[6]}
+        return result
+
     def getAllProducts(self):
         dao = ProductDAO()
         result_t = dao.getAllProducts()
@@ -125,19 +130,21 @@ class ProductController:
 
         result = []
         for r in result_t:
-            d = self.build_dict(dao.getProductById(r[0]))
+            row = dao.getProductById(r[0])
+            row = row + tuple([r[1]])
+            d = self.build_dict_ammount(row)
             result.append(d)
 
         return jsonify(result)
 
     def getMostLikedProduct(self):
         dao = ProductDAO()
-        product_id = dao.getMostLikedProduct()
-        result = dao.getProductById(product_id)
+        r = dao.getMostLikedProduct()
+        result = dao.getProductById(r[0])
         if not result:
             return jsonify("Not Found"), 404
-
-        d = self.build_dict(result)
+        result = result + tuple([r[1]])
+        d = self.build_dict_ammount(result)
         return jsonify(d)
 
     def getCheapestProduct(self):

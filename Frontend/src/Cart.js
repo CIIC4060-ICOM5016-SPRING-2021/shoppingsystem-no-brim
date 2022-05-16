@@ -26,7 +26,10 @@ function Cart() {
     const deleteCartItem = (id) => {
         axios.delete("https://db-class-22.herokuapp.com//NO-BRIM/Cart/cart/delete/" 
         +id).then((response)=>{
-                setData(response.data)
+            axios.get("https://db-class-22.herokuapp.com//NO-BRIM/Cart/cart/" + localStorage.getItem("user_id"))
+                .then((response)=>{
+                    setData(response.data)
+                })
             })
     }
 
@@ -66,7 +69,6 @@ function Cart() {
                     setData(response.data)
                 })
         })
-
     }
 
     // Need to finish this (update buttons - onClick())

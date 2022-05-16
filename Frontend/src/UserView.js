@@ -7,11 +7,14 @@ import Profile from "./Profile";
 import UserStatistics from "./UserStatistics";
 import Cart from "./Cart";
 import UserUpdateForm from "./UserUpdateForm";
+import ProductModify from "./ProductModify";
+import Orders from "./Orders";
 
 
 function UserView(){
     const [isAuth, setIsAuth] = useState(true)
     const [notShow, setNotShow] = useState(false)
+    const [isAd, setIsAd] = useState(false)
     let username = localStorage.getItem("username");
     username = username.replace(/"/g, '');
     const panes = [
@@ -29,6 +32,12 @@ function UserView(){
         },
         {
             menuItem: 'Dashboard', render: () => <Tab.Pane active={isAuth}><Dashboard/></Tab.Pane>
+        },
+        {
+            menuItem: 'Order History', render: () => <Tab.Pane active={isAuth}><Orders/></Tab.Pane>
+        },
+        {
+            menuItem: 'Product Modification', render: () => <Tab.Pane active= "false"><ProductModify/></Tab.Pane>
         }
     ]
 

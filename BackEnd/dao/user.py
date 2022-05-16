@@ -59,7 +59,7 @@ class UserDAO:
 
     # Need further testing
     def getRankMostBoughtCategory(self, user_id):
-        query = 'SELECT pc.category_id, pc.name, pc.description, SUM(oi.quantity) FROM ordered_items as oi INNER JOIN products p on oi.product = p.product_id INNER JOIN product_categories pc on p.category = pc.category_id INNER JOIN orders o on oi."order" = o.order_id INNER JOIN "user" u on o."user" = u.user_id WHERE u.user_id = %s GROUP BY pc.category_id ORDER BY SUM(oi.quantity) DESC;'
+        query = 'SELECT pc.category_id, pc.name, pc.description, SUM(oi.quantity) FROM ordered_items as oi INNER JOIN products p on oi.product = p.product_id INNER JOIN product_categories pc on p.category = pc.category_id INNER JOIN orders o on oi."order" = o.order_id INNER JOIN "user" u on o."user" = u.user_id WHERE u.user_id = %s GROUP BY pc.category_id ORDER BY SUM(oi.quantity) DESC LIMIT 5;'
         cursor = self.conn.cursor()
         cursor.execute(query, (user_id, ))
         result = []
@@ -68,7 +68,7 @@ class UserDAO:
         return result
 
     def getRankMostBoughtProdcut(self, user_id):
-        query = 'SELECT p.product_id, p.name, p.description, p.price as price, p.inventory, p.name, SUM(oi.quantity) AS ammount FROM ordered_items as oi INNER JOIN products p on oi.product = p.product_id INNER JOIN product_categories pc on p.category = pc.category_id INNER JOIN orders o on oi."order" = o.order_id INNER JOIN "user" u on o."user" = u.user_id WHERE u.user_id = %s GROUP BY p.product_id ORDER BY SUM(oi.quantity) DESC;'
+        query = 'SELECT p.product_id, p.name, p.description, p.price as price, p.inventory, p.name, SUM(oi.quantity) AS ammount FROM ordered_items as oi INNER JOIN products p on oi.product = p.product_id INNER JOIN product_categories pc on p.category = pc.category_id INNER JOIN orders o on oi."order" = o.order_id INNER JOIN "user" u on o."user" = u.user_id WHERE u.user_id = %s GROUP BY p.product_id ORDER BY SUM(oi.quantity) DESC LIMIT 5;'
         cursor = self.conn.cursor()
         cursor.execute(query, (user_id, ))
         result = []

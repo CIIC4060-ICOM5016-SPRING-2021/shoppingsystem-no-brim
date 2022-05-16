@@ -1,5 +1,5 @@
 import React, {Component, useEffect, useState} from 'react';
-import {Card, Grid, Segment} from "semantic-ui-react";
+import {Card, Grid, Input, Segment} from "semantic-ui-react";
 import axios from "axios";
 import { Button,Icon,Confirm} from 'semantic-ui-react';
 
@@ -40,6 +40,20 @@ function Cart() {
             })
     }
 
+    const updateCart = () => {
+        axios.put("https://db-class-22.herokuapp.com//NO-BRIM/Cart/cart/update/" + localStorage.getItem("cart_item_id"))
+            .then((response)=>{
+                setData(response.data)
+            })
+    }
+
+    const handleChange = (event) => {
+        const quantity = event.target.quantity;
+        const value = event.target.value;
+
+    }
+
+
     function refreshPage() {
         window.location.reload(false);
       }
@@ -56,14 +70,31 @@ function Cart() {
     }
 
     // Need to finish this (update buttons - onClick())
-    function updateQuantity(value){
-        if (value <= 0){
-            // remove del cart
+    function UpdateQuantity(value){
+        let qty = value;
+        let [setQty] = useState(0);
+        let incrementQty = () =>{
+            if(qty < 10){
+                setQty(Number(qty)+1);
+            }
+        };
+        let decrementQty = () =>{
+            if(qty > 0){
+                setQty(Number(qty)-1);
+            }
         }
-        else{
-            // value >= 1
-            // let me increment and decrement quantity
+        let handleChange = (event) =>{
+            setQty(event.target.value);
         }
+
+        return(
+            <>
+                <div>
+                    <button class={"ui icon button"} onClick={decrementQty}><i aria-hidden={"true"} class={"minus icon"}></i></button>
+                    <input type={"text"} class={"form-control"} value={qty} onChange={handleChange}></input>
+                    <button class={"ui icon button"} onClick={incrementQty}><i aria-hidden={"true"} class={"plus icon"}></i></button>
+                </div>);
+            </>);
     }
 
 
@@ -75,13 +106,13 @@ function Cart() {
     let username = localStorage.getItem("username");
     username = username.replace(/"/g, '');
 
-    let cart_subtotal = 0
-    let cart_quantity = 0
+    let cart_subtotal = 0;
+    let cart_quantity = 0;
 
     user_cart = data.map(
         value => {
             cart_subtotal += value.products_price;
-            cart_quantity += value.quantity
+            cart_quantity += value.quantity;
         })
 
     cartItems= 
@@ -94,11 +125,7 @@ function Cart() {
                 </Card.Content>
                 <Card.Content extra style={{marginLeft: '5%', marginRight: '5%'}}>
                     <Button.Group >
-                        <Button icon='minus' />
-                        {/*<Label>*/}
-                        {/*    {value.quantity}*/}
-                        {/*</Label>*/}
-                        <Button icon='plus' />
+                        {UpdateQuantity(value.quantity)}
                         <Button fluid animated='vertical' size="big" basic color = "red" onClick={() => [deleteCartItem(value.cart_item_id),refreshPage()]}>
                             <Button.Content hidden>Remove</Button.Content>
                             <Button.Content visible>

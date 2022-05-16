@@ -129,6 +129,12 @@ def cart_delete_handler(cart_item_id):
     elif request.method == 'DELETE':
         return CartController().removeCartItem(cart_item_id)
 
+@app.route('/NO-BRIM/Cart/cart/update/<int:cart_item_id>', methods=['GET', 'PUT'])
+def cart_update_handler(cart_item_id):
+    if request.method == 'GET':
+        return CartController().getCart()
+    elif request.method == 'PUT':
+        return CartController().updateCart(cart_item_id, request.json)
 
 @app.route('/NO-BRIM/Cart/cart/clear/<int:user_id>', methods=['GET', 'DELETE'])
 def cart_clear_handler(user_id):

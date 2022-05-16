@@ -142,6 +142,14 @@ def cart_clear_handler(user_id):
         return CartController().clearCartItems(user_id)
 
 
+@app.route('/NO-BRIM/Cart/cart/update/<int:cart_item_id>', methods=['GET', 'PUT'])
+def cart_update_handler(cart_item_id):
+    if request.method == 'GET':
+        return CartController().getAllCarts()
+    elif request.method == 'PUT':
+        return CartController().updateCart(cart_item_id, request.json)
+
+
 @app.route('/NO-BRIM/Liked/liked_items/')
 def liked_handler():
     return LikedController().getAllLikes()

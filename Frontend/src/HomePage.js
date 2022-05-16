@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-import {Button, Divider, Form, Grid, Header, Segment} from 'semantic-ui-react';
+import {Button, Divider, Form, Grid, Header, Segment, Modal} from 'semantic-ui-react';
 import axios from "axios";
+import SignUpForm from "./SignUpForm";
 
 
 
@@ -41,20 +42,27 @@ function HomePage() {
             })
     }
 
-    const handleLogin = () => {
-        localStorage.setItem("isLogged",JSON.stringify(false))
-        localStorage.setItem("user_id",JSON.stringify(null));
-        localStorage.setItem("isAdmin",JSON.stringify(null));
-        localStorage.setItem("username",JSON.stringify(null));
-        localStorage.setItem("first_name",JSON.stringify(null));
-        localStorage.setItem("last_name",JSON.stringify(null));
-        localStorage.setItem("email",JSON.stringify(null));
-        localStorage.setItem("phone",JSON.stringify(null));
-    }
-
-
     return (
-        <Segment  style={{ backgroundColor: '#F0F0F0' }}>
+        <Segment  style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#F0F0F0'}}>
+            <Modal style={{ marginTop: '10%' }}
+                centered={false}
+                open={open}
+                onClose={() => setOpen(false)}
+                onOpen={() => setOpen(true)}
+            >
+                <Modal.Header style={{ textAlign: ' center' }}>Signup!</Modal.Header>
+                <Modal.Content>
+                    <Modal.Description style={{ textAlign: ' center' }}>
+                        Type in your information to create your account with us!
+                    </Modal.Description>
+                    <SignUpForm/>
+                        <Button onClick={() => setOpen(false)}>Cancel</Button>
+                </Modal.Content>
+                {/*<Modal.Actions>*/}
+
+                {/*</Modal.Actions>*/}
+            </Modal>
+
             {/*<h1 textAlign="center" style={{ fontSize: '325%',textAlign: 'center', paddingTop: '10%'}}>Welcome to No-Brim hat shop!</h1>*/}
 
             <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
@@ -99,7 +107,6 @@ function HomePage() {
 
                     {/*<Grid.Column verticalAlign='middle'>*/}
                     {/*    <Button content='Sign up' icon='signup' size='big' onClick={() => setOpen(true)}/>*/}
-                    {/*    <Button content='Log Out' icon='signup' size='big' onClick={() => handleLogin()}/>*/}
                     {/*</Grid.Column>*/}
 
                 {/*<Divider vertical>Or</Divider>*/}

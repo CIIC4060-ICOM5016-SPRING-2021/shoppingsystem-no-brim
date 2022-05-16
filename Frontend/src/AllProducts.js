@@ -1,5 +1,5 @@
 import React, {Component, useState} from 'react';
-import {Button, Card, Container, Modal, Tab, Select} from "semantic-ui-react";
+import {Button, Card, Container, Modal, Tab, Select, Icon} from "semantic-ui-react";
 import axios from "axios";
 
 
@@ -31,18 +31,24 @@ function AllProducts(props) {
     return props.info.map(value => {return <Card>
         <Card.Content>
             <Card.Header>{value.name}</Card.Header>
-            <Card.Meta>{value.price}</Card.Meta>
+            <Card.Meta style={{marginTop: '3%'}}><Icon name='dollar sign'/>{value.price}</Card.Meta>
             <Card.Description>
                 {value.description}
             </Card.Description>
         </Card.Content>
         <Card.Content extra>
             <div className='ui two buttons'>
-                <Button basic color='green' onClick={() => addWishlist(value)}>
-                    Add to Wish List
+                <Button animated='vertical' basic color='pink' onClick={() => addWishlist(value)}>
+                    <Button.Content hidden>Add to Wish List</Button.Content>
+                    <Button.Content visible>
+                        <Icon name='like' />
+                    </Button.Content>
                 </Button>
-                <Button basic color='green' onClick={() => addCart(value)}>
-                    Add to Cart
+                <Button animated='vertical' basic color='green' onClick={() => addCart(value)}>
+                    <Button.Content hidden>Add to Cart</Button.Content>
+                    <Button.Content visible>
+                        <Icon name='shop' />
+                    </Button.Content>
                 </Button>
             </div>
         </Card.Content>

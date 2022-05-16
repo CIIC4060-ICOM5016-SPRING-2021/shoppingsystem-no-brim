@@ -8,10 +8,11 @@ function Products() {
     const [selectedFilter, setSelectedFilter] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
     const filterOptions = [{key: 'N', value: 'N', text: 'No Filter'},
-        { key: 'PHL', value: 'PHL', text: 'Price High-Low' },
         { key: 'PLH', value: 'PLH', text: 'Price Low-High' },
-        { key: 'NHL', value: 'NHL', text: 'Name High-Low' },
-        { key: 'NLH', value: 'NLH', text: 'Name Low-High' },
+        { key: 'PHL', value: 'PHL', text: 'Price High-Low' },
+        { key: 'NHL', value: 'NHL', text: 'Name A-Z' },
+        { key: 'NLH', value: 'NLH', text: 'Name Z-A' }
+
     ]
     const categoryOptions =[
         {key: 'B', value: '1', text:'Beanie'},
@@ -99,7 +100,7 @@ function Products() {
             onChange={(e,data) => changeCategory(e,data)}
 
         />
-        <Card.Group>
+        <Card.Group centered style={{marginTop: "0.5%", marginBottom: '1%', textAlign: 'center'}}>
 
         <AllProducts info={data}/>
     </Card.Group>

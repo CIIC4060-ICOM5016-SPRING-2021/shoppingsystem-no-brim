@@ -1,7 +1,6 @@
-import React, {Component, useState} from 'react';
-import {Button, Divider, Form, Grid, Header, Modal, Segment, Tab} from 'semantic-ui-react';
+import React, {useState} from 'react';
+import {Button, Form} from 'semantic-ui-react';
 import axios from "axios";
-import WishList from "./Wishlist";
 
 
 function SignUpForm() {
@@ -43,6 +42,7 @@ function SignUpForm() {
                 label='First Name'
                 type="text"
                 name="first_name"
+                placeholder='First Name'
                 value={inputs.first_name || ""}
                 onChange={handleChange}
             />
@@ -51,6 +51,7 @@ function SignUpForm() {
                 label='Last Name'
                 type="text"
                 name="last_name"
+                placeholder='Last Name'
                 value={inputs.last_name || ""}
                 onChange={handleChange}
             />
@@ -60,6 +61,7 @@ function SignUpForm() {
                 label='Username'
                 type="text"
                 name="username"
+                placeholder='Username'
                 value={inputs.username || ""}
                 onChange={handleChange}
             />
@@ -69,6 +71,7 @@ function SignUpForm() {
                 label='Email'
                 type="text"
                 name="email"
+                placeholder='Email'
                 value={inputs.email || ""}
                 onChange={handleChange}
             />
@@ -87,6 +90,7 @@ function SignUpForm() {
                 label='Password'
                 type="password"
                 name="password"
+                placeholder='Password'
                 value={inputs.password || ""}
                 onChange={handleChange}
             />

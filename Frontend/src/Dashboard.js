@@ -71,7 +71,7 @@ function Dashboard(){
     mostBoughtItems= 
         mboughtProduct.map( value =>
              <Card>
-                <Card.Content>
+                <Card.Content style={{textAlign: 'center'}}>
                     <Card.Header>{value.name}</Card.Header>
                     <Card.Meta>Category: {value.category}</Card.Meta>
                     <Card.Meta>Amount bought: {value.ammount}</Card.Meta>
@@ -89,7 +89,7 @@ function Dashboard(){
             <h2> The most bought category:</h2>
                 <div>
                     <Card>
-                        <Card.Content>
+                        <Card.Content style={{textAlign: 'center'}}>
                             <Card.Header>{mboughtCategory.description}</Card.Header>
                             <Card.Meta>Category: {mboughtCategory.name}</Card.Meta>
                             <Card.Meta>Amount bought: {mboughtCategory.amount}</Card.Meta>
@@ -98,13 +98,13 @@ function Dashboard(){
                     </Card>
                 </div>
             <h2>Most bought products:</h2>
-                <div> 
+                <div>
                     {mostBoughtItems}
                 </div>
                 <h2> Cheapest product:</h2>
                     <div>
                         <Card>
-                            <Card.Content>
+                            <Card.Content style={{textAlign: 'center'}}>
                                 <Card.Header>{CheapestProduct.name}</Card.Header>
                                 <Card.Meta>Category: {CheapestProduct.category}</Card.Meta>
                             </Card.Content>
@@ -114,7 +114,7 @@ function Dashboard(){
                 <h2> Most liked product:</h2>
                     <div>
                         <Card>
-                            <Card.Content>
+                            <Card.Content style={{textAlign: 'center'}}>
                                 <Card.Header>{mLikedProduct.name}</Card.Header>
                                 <Card.Meta>Category: {mLikedProduct.category}</Card.Meta>
                                 <Card.Meta>Amount bought: {mLikedProduct.ammount}</Card.Meta>
@@ -125,7 +125,7 @@ function Dashboard(){
                 <h2> Most expensive product:</h2>
                     <div>
                         <Card>
-                            <Card.Content>
+                            <Card.Content style={{textAlign: 'center'}}>
                                 <Card.Header>{mExpensiveProduct.name}</Card.Header>
                                 <Card.Meta>Category: {mExpensiveProduct.category}</Card.Meta>
                             </Card.Content>

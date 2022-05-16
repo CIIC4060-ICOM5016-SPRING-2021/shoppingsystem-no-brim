@@ -48,6 +48,22 @@ class OrderController:
 
         return jsonify(result)
 
+
+    def getOrdersByUser(self, user_id):
+        dao = OrderDao()
+        result_t = dao.getAllUserOrders(user_id)
+
+        result = []
+        for r in result_t:
+            temp = []
+            d = self.build_order_dict(r)
+            temp.append(d)
+            items = self.getOrderItems(d['order_id'])
+            temp.extend(items)
+            result.append(temp)
+
+        return jsonify(result)
+
     def createOrder(self, user_id):
         dao = OrderDao()
         c_dao = CartDao()

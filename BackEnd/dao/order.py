@@ -39,6 +39,17 @@ class OrderDao:
         self.conn.close()
         return result
 
+    def getAllUserOrders(self, user_id):
+        query = 'SELECT order_id, "user", date_ordered, total_cost FROM orders WHERE "user" = %s;'
+        cursor = self.conn.cursor()
+        cursor.execute(query, (user_id, ))
+        result = []
+        for r in cursor:
+            result.append(r)
+        cursor.close()
+        self.conn.close()
+        return result
+
     def newOrder(self, user_id):
         query = 'INSERT INTO orders("user",date_ordered) VALUES (%s, %s) returning order_id'
         cursor = self.conn.cursor()

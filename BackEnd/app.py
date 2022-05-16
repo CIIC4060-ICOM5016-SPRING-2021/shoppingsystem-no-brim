@@ -103,6 +103,10 @@ def order_byid_handler(order_id):
 def order_handler():
     return OrderController().getAllOrders()
 
+@app.route('/NO-BRIM/Order/orders/user/<int:user_id>')
+def order_user_handler(user_id):
+    return OrderController().getOrdersByUser(user_id)
+
 
 @app.route('/NO-BRIM/Cart/cart/')
 def cart_handler():

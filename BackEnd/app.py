@@ -103,6 +103,10 @@ def order_byid_handler(order_id):
 def order_handler():
     return OrderController().getAllOrders()
 
+@app.route('/NO-BRIM/Order/orders/user/<int:user_id>')
+def order_user_handler(user_id):
+    return OrderController().getOrdersByUser(user_id)
+
 
 @app.route('/NO-BRIM/Cart/cart/')
 def cart_handler():
@@ -136,6 +140,14 @@ def cart_clear_handler(user_id):
         return CartController().getAllCarts()
     elif request.method == 'DELETE':
         return CartController().clearCartItems(user_id)
+
+
+@app.route('/NO-BRIM/Cart/cart/update/<int:cart_item_id>', methods=['GET', 'PUT'])
+def cart_update_handler(cart_item_id):
+    if request.method == 'GET':
+        return CartController().getAllCarts()
+    elif request.method == 'PUT':
+        return CartController().updateCart(cart_item_id, request.json)
 
 
 @app.route('/NO-BRIM/Liked/liked_items/')

@@ -6,17 +6,25 @@ from dao.productcategory import ProductCategoryDAO
 class UserController:
 
     def build_dict(self,row):
+
         result = {'user_id': row[0],'username':row[1], 'password': row[2],'first_name':row[3],'last_name': row[4],
                   'phone': row[5],'email': row[6], 'created_at' : row[7], 'is_admin': row[8]}
         return result
 
     def build_product_dict(self, row):
-        result = {'product_id': row[0], 'name': row[1], 'description': row[2], 'price': row[3],
-                  'inventory': row[4],'category': row[5]}
+        if len(row) > 6:
+            result = {'product_id': row[0], 'name': row[1], 'description': row[2], 'price': row[3],
+                      'inventory': row[4], 'category': row[5], 'amount': row[6]}
+        else:
+            result = {'product_id': row[0], 'name': row[1], 'description': row[2], 'price': row[3],
+                      'inventory': row[4], 'category': row[5]}
         return result
 
     def build_product_category_dict(self, row):
-        result = {'category_id': row[0], 'name': row[1], 'description': row[2]}
+        if row[3]:
+            result = {'category_id': row[0], 'name': row[1], 'description': row[2], 'amount': row[3]}
+        else:
+            result = {'category_id': row[0], 'name': row[1], 'description': row[2]}
         return result
 
     def getAllUsers(self):
@@ -94,14 +102,16 @@ class UserController:
         cat_ids = dao.getRankMostBoughtCategory(user_id)
 
         for i in cat_ids:
-            result_t.append(prod_cat_dao.getProductCategoryById(i[0]))
+            # result_t.append(prod_cat_dao.getProductCategoryById(i[0]))
+            d = self.build_product_category_dict(i)
+            result.append(d)
 
-        if not result_t:
+        if not result:
             return jsonify("Not Found"), 404
 
-        for r in result_t:
-            d = self.build_product_category_dict(r)
-            result.append(d)
+        # for r in result_t:
+        #     d = self.build_product_category_dict(r)
+        #     result.append(d)
 
         return jsonify(result)
 
@@ -114,14 +124,16 @@ class UserController:
         result = []
 
         for i in prod_ids:
-            result_t.append(prod_dao.getProductById(i[0]))
+            # result_t.append(prod_dao.getProductById(i[0]))
+            d = self.build_product_dict(i)
+            result.append(d)
 
-        if not result_t:
+        if not result:
             return jsonify("Not Found"), 404
 
-        for r in result_t:
-            d = self.build_product_dict(r)
-            result.append(d)
+        # for r in result_t:
+        #     d = self.build_product_dict(r)
+        #     result.append(d)
 
         return jsonify(result)
 

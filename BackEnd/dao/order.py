@@ -12,7 +12,8 @@ class OrderDao:
         self.conn = psycopg2.connect(connection_url)
 
     def getOrderItems(self, order_id):
-        query = "SELECT ordered_item_id, product, quantity, price, ordered_items.order FROM ordered_items " \
+        query = "SELECT ordered_item_id, product, quantity, ordered_items.price, ordered_items.order, p.name " \
+                "FROM ordered_items INNER JOIN products p on p.product_id = ordered_items.product " \
                 "WHERE ordered_items.order = %s;"
         cursor = self.conn.cursor()
         cursor.execute(query, (order_id,))

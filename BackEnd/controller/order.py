@@ -10,7 +10,7 @@ class OrderController:
         return result
 
     def build_order_item_dict(self, row):
-        result = {'ordered_item_id': row[0], 'product': row[1], 'quantity': row[2], 'price': row[3], 'order': row[4]}
+        result = {'ordered_item_id': row[0], 'product': row[1], 'quantity': row[2], 'price': row[3], 'order': row[4], 'pname': row[5]}
         return result
 
     def getOrderItems(self, order_id):

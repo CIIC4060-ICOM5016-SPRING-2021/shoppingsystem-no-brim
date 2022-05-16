@@ -1,7 +1,7 @@
 import React, {Component, useEffect, useState} from 'react';
 import {Card, Grid, Input, Segment} from "semantic-ui-react";
 import axios from "axios";
-import { Button,Icon,Confirm} from 'semantic-ui-react';
+import { Button,Icon,Confirm, Image} from 'semantic-ui-react';
 
 
 function Cart() {
@@ -43,6 +43,20 @@ function Cart() {
             })
     }
 
+    const addCart = (value) => {
+        let info = {"Product":value.product_id, "User": localStorage.getItem("user_id"), "Quantity":1}
+
+        axios.post('https://db-class-22.herokuapp.com//NO-BRIM/Cart/cart/add', info)
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+                axios.get("https://db-class-22.herokuapp.com//NO-BRIM/Cart/cart/" + localStorage.getItem("user_id"))
+                    .then((response)=>{
+                        setData(response.data)
+                    })
+            })
+    }
+
     const updateCart = () => {
         axios.put("https://db-class-22.herokuapp.com//NO-BRIM/Cart/cart/update/" + localStorage.getItem("cart_item_id"))
             .then((response)=>{
@@ -57,10 +71,6 @@ function Cart() {
     }
 
 
-    function refreshPage() {
-        window.location.reload(false);
-      }
-
     const clearCart = () =>{
         axios.delete("https://db-class-22.herokuapp.com//NO-BRIM/Cart/cart/clear/"+localStorage.getItem("user_id"))
         .then((response)=>{
@@ -70,35 +80,6 @@ function Cart() {
                 })
         })
     }
-
-    // Need to finish this (update buttons - onClick())
-    function UpdateQuantity(value){
-        let qty = value;
-        let [setQty] = useState(0);
-        let incrementQty = () =>{
-            if(qty < 10){
-                setQty(Number(qty)+1);
-            }
-        };
-        let decrementQty = () =>{
-            if(qty > 0){
-                setQty(Number(qty)-1);
-            }
-        }
-        let handleChange = (event) =>{
-            setQty(event.target.value);
-        }
-
-        return(
-            <>
-                <div>
-                    <button class={"ui icon button"} onClick={decrementQty}><i aria-hidden={"true"} class={"minus icon"}></i></button>
-                    <input type={"text"} class={"form-control"} value={qty} onChange={handleChange}></input>
-                    <button class={"ui icon button"} onClick={incrementQty}><i aria-hidden={"true"} class={"plus icon"}></i></button>
-                </div>);
-            </>);
-    }
-
 
     useEffect(getCart,[])  //Possible URL in empty brackets
 
@@ -122,20 +103,24 @@ function Cart() {
             <Card>
                 <Card.Content>
                     <Card.Header>{value.products_name}</Card.Header>
-                    <Card.Meta>{value.products_price}</Card.Meta>
-                    <Card.Description>{value.quantity} in your cart</Card.Description>
+                    <Card.Meta style={{marginTop: '3%'}}><Icon name='dollar sign'/>{value.products_price}</Card.Meta>
+                    <Card.Description>Quantity: {value.quantity}</Card.Description>
                 </Card.Content>
                 <Card.Content extra style={{marginLeft: '5%', marginRight: '5%'}}>
-                    <Button.Group >
-                        {UpdateQuantity(value.quantity)}
-                        <Button fluid animated='vertical' size="big" basic color = "red" onClick={() => [deleteCartItem(value.cart_item_id),refreshPage()]}>
+                    <Button.Group fluid>
+                        <Button animated='vertical' basic size="big" color="grey" animated='vertical' onClick={() => addCart(value)}>
+                            <Button.Content hidden>Add another</Button.Content>
+                            <Button.Content visible>
+                                <Icon name='plus'/>
+                            </Button.Content>
+                        </Button>
+                        <Button animated='vertical' size="big" basic color = "red" onClick={() => deleteCartItem(value.cart_item_id)}>
                             <Button.Content hidden>Remove</Button.Content>
                             <Button.Content visible>
                                 <Icon name='trash alternate'/>
                             </Button.Content>
                         </Button>
                     </Button.Group>
-
                 </Card.Content>
             </Card>)
 
@@ -144,7 +129,7 @@ function Cart() {
                 <Grid.Row columns={2}>
                     <Grid.Column width={12}>
                         <h1 style={{marginTop: "1%", marginBottom: '2%', textAlign: 'center'}}>Items in {username}'s cart:</h1>
-                        <Card.Group centered>
+                        <Card.Group centered style={{marginTop: "0.5%", marginBottom: '1%', textAlign: 'center'}}>
                             {cartItems}
                         </Card.Group>
                     </Grid.Column>
@@ -153,16 +138,16 @@ function Cart() {
                             <h1 style={{marginTop: "1%", marginBottom: '2%', textAlign: 'center'}}>Order Summary</h1>
                             <h3>Total number of items: {cart_quantity}</h3>
                             <h3>Cart Subtotal: ${cart_subtotal}</h3>
-                            <Button fluid animated="vertical" size='massive' basic color='red'
+                            <Button fluid animated="vertical" size='massive' basic color='red' style={{marginTop: "1%", marginBottom: '4%'}}
                                     onClick={()=> clearCart()}>
-                                <Button.Content hidden>Clear Cart</Button.Content>
+                                <Button.Content hidden>Clear items from cart</Button.Content>
                                 <Button.Content visible>
                                     <Icon name='remove circle'/>
                                 </Button.Content>
                             </Button>
                             <Button fluid animated="vertical" size='massive' basic color='green'
                                     onClick={()=> buyCart()}>
-                                <Button.Content hidden>Buy Cart</Button.Content>
+                                <Button.Content hidden>Buy all items in cart</Button.Content>
                                 <Button.Content visible>
                                     <Icon name='shopping bag'/>
                                 </Button.Content>

@@ -42,38 +42,39 @@ function WishList() {
 
     wishlistItems =
         data.map(value =>
-            <Card>
-                <Card.Content>
-                    <Card.Header>{value.products_name}</Card.Header>
-                    <Card.Meta>{value.products_price}</Card.Meta>
-                    <Card.Description>
-                        {value.products_description}
-                    </Card.Description>
-                </Card.Content>
-                <Card.Content extra>
-                    <div className='ui two buttons'>
-                        <Button animated='vertical' basic color='green' onClick={() => addToCart(value)}>
-                            <Button.Content hidden>Add to Cart</Button.Content>
-                            <Button.Content visible>
-                                <Icon name='shop' />
-                            </Button.Content>
-                        </Button>
-                        <Button animated='vertical' basic color='red' onClick={() => removeFromWishlist(value.liked_item_id)}>
-                            <Button.Content hidden>Remove</Button.Content>
-                            <Button.Content visible>
-                                <Icon name='trash alternate' />
-                            </Button.Content>
-                        </Button>
-                    </div>
-                </Card.Content>
-            </Card>)
+                <Card>
+                    <Card.Content>
+                        <Card.Header>{value.products_name}</Card.Header>
+                        <Card.Meta style={{marginTop: '3%'}}><Icon name='dollar sign'/>{value.products_price}</Card.Meta>
+                        <Card.Description>
+                            {value.products_description}
+                        </Card.Description>
+                    </Card.Content>
+                    <Card.Content extra>
+                        <div className='ui two buttons'>
+                            <Button animated='vertical' basic color='red' onClick={() => removeFromWishlist(value.liked_item_id)}>
+                                <Button.Content hidden>Remove</Button.Content>
+                                <Button.Content visible>
+                                    <Icon name='trash alternate' />
+                                </Button.Content>
+                            </Button>
+                            <Button animated='vertical' basic color='green' onClick={() => addToCart(value)}>
+                                <Button.Content hidden>Add to Cart</Button.Content>
+                                <Button.Content visible>
+                                    <Icon name='shop' />
+                                </Button.Content>
+                            </Button>
+                        </div>
+                    </Card.Content>
+                </Card>
+)
 
     return (
         <Grid centered>
             <Grid.Row>
                 <Grid.Column width={12}>
                     <h1 style={{marginTop: "1%", marginBottom: '2%', textAlign: 'center'}}>Items in {username}'s wishlist:</h1>
-                    <Card.Group centered>
+                    <Card.Group centered style={{marginTop: "0.5%", marginBottom: '1%', textAlign: 'center'}}>
                         {wishlistItems}
                     </Card.Group>
                 </Grid.Column>

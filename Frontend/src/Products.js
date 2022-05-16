@@ -10,8 +10,9 @@ function Products() {
     const filterOptions = [{key: 'N', value: 'N', text: 'No Filter'},
         { key: 'PLH', value: 'PLH', text: 'Price Low-High' },
         { key: 'PHL', value: 'PHL', text: 'Price High-Low' },
-        { key: 'NLH', value: 'NLH', text: 'Name A-Z' },
-        { key: 'NHL', value: 'NHL', text: 'Name Z-A' }
+        { key: 'NHL', value: 'NHL', text: 'Name A-Z' },
+        { key: 'NLH', value: 'NLH', text: 'Name Z-A' }
+
     ]
     const categoryOptions =[
         {key: 'B', value: '1', text:'Beanie'},

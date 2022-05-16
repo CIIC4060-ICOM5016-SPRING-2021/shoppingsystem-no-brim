@@ -8,6 +8,7 @@ import UserStatistics from "./UserStatistics";
 import Cart from "./Cart";
 import UserUpdateForm from "./UserUpdateForm";
 import ProductModify from "./ProductModify";
+import Orders from "./Orders";
 
 
 function UserView(){
@@ -29,6 +30,9 @@ function UserView(){
         },
         {
             menuItem: 'Dashboard', render: () => <Tab.Pane active={isAuth}><Dashboard/></Tab.Pane>
+        },
+        {
+            menuItem: 'Order History', render: () => <Tab.Pane active={isAuth}><Orders/></Tab.Pane>
         },
         { // must finish
             menuItem: 'Logout', render: () => <Tab.Pane active={isAuth}></Tab.Pane>

@@ -41,7 +41,7 @@ class OrderDao:
         return result
 
     def getAllUserOrders(self, user_id):
-        query = 'SELECT order_id, "user", date_ordered, total_cost FROM orders WHERE "user" = %s;'
+        query = 'SELECT order_id, "user", date_ordered, (SELECT SUM(price*ordered_items.quantity) FROM ordered_items where "order" = order_id ) AS total_cost FROM orders WHERE "user" = %s;'
         cursor = self.conn.cursor()
         cursor.execute(query, (user_id, ))
         result = []

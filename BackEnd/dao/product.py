@@ -118,7 +118,7 @@ class ProductDAO:
     def getMostBoughtProduct(self):
         query = "SELECT ordered_items.product, SUM(quantity) FROM ordered_items INNER JOIN products p on p.product_id = " \
                 "ordered_items.product WHERE p.isactive GROUP BY ordered_items.product ORDER BY SUM(quantity) " \
-                "DESC;"
+                "DESC LIMIT 5;"
         cursor = self.conn.cursor()
         cursor.execute(query)
         result = []
